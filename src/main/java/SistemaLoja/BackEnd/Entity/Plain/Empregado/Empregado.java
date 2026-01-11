@@ -46,6 +46,7 @@ public class Empregado {
     @Max(24)
     private String codEmpregado;
 
+    // Responsável apenas pelos campos NOT NULL no banco
     public Empregado(String nome, String cpf, String senha, String email, BigDecimal salario, Integer filialId) {
         this.nome = nome;
         this.cpf = cpf;
@@ -53,5 +54,21 @@ public class Empregado {
         this.email = email;
         this.salario = salario;
         this.filialId = filialId;
+    }
+
+    // Responsável quando for envio de dados completos para cadastro
+    public Empregado(String nome, String cpf, String senha, String email, String telefone, BigDecimal salario,
+                     TipoCargo cargo, Integer filialId, Date aniversario, Date dataAdimissao, String codEmpregado) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.senha = senha;
+        this.email = email;
+        this.telefone = telefone;
+        this.salario = salario;
+        this.cargo = cargo;
+        this.filialId = filialId;
+        this.aniversario = aniversario;
+        this.dataAdimissao = dataAdimissao;
+        this.codEmpregado = codEmpregado;
     }
 }

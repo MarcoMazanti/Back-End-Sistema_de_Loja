@@ -1,4 +1,4 @@
-package SistemaLoja.BackEnd.Entity.Plain.Filial;
+package SistemaLoja.BackEnd.Entity.Plain.Cliente;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,18 +14,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "filial")
-public class Filial {
+@Entity(name = "cliente")
+public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank
-    @Size(min = 14, max = 14)
-    private String cnpj;
+    @Max(255)
+    private String nome;
     @NotBlank
+    @Size(min = 11, max = 14)
+    private String cpfOrCnpj;
+    @NotBlank
+    @Max(255)
+    private String email;
     @Size(min = 9, max = 15)
     private String telefone;
-    private int quantEmpregados;
     @NotBlank
     private String fullAdress;
     @NotBlank
@@ -37,18 +41,19 @@ public class Filial {
     @NotBlank
     @Max(3)
     private String codCidade;
-    @Max(21)
-    private String codFilial;
+    @Max(25)
+    private String codCliente;
 
-    // Responsável pela volta da FilialRecordTwo quando descriptografar
-    public Filial(String codFilial, String cnpj, String telefone, int quantEmpregados, String fullAdress) {
-        String[] listaDados = codFilial.split("-");
+    // Responsável pela volta do ClienteRecordTwo quando descriptografar
+    public Cliente(String codCliente, String nome, String cpfOrCnpj, String email, String telefone, String fullAdress) {
+        String[] listaDados = codCliente.split("-");
 
         this.id = Integer.parseInt(listaDados[4]);
-        this.codFilial = codFilial;
-        this.cnpj = cnpj;
+        this.codCliente = codCliente;
+        this.nome = nome;
+        this.cpfOrCnpj = cpfOrCnpj;
+        this.email = email;
         this.telefone = telefone;
-        this.quantEmpregados = quantEmpregados;
         this.fullAdress = fullAdress;
         this.codCountry = listaDados[0];
         this.codEstado = listaDados[1];
@@ -56,9 +61,10 @@ public class Filial {
     }
 
     // Responsável apenas pelos campos NOT NULL no banco
-    public Filial(String cnpj, String telefone, String fullAdress, String codCountry, String codEstado, String codCidade) {
-        this.cnpj = cnpj;
-        this.telefone = telefone;
+    public Cliente(String nome, String cpfOrCnpj, String email, String fullAdress, String codCountry, String codEstado, String codCidade) {
+        this.nome = nome;
+        this.cpfOrCnpj = cpfOrCnpj;
+        this.email = email;
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
@@ -66,14 +72,16 @@ public class Filial {
     }
 
     // Responsável quando for envio de dados completos para cadastro
-    public Filial(String cnpj, String telefone, int quantEmpregados, String fullAdress, String codCountry, String codEstado, String codCidade, String codFilial) {
-        this.cnpj = cnpj;
+    public Cliente(String nome, String cpfOrCnpj, String email, String telefone, String fullAdress, String codCountry,
+                   String codEstado, String codCidade, String codCliente) {
+        this.nome = nome;
+        this.cpfOrCnpj = cpfOrCnpj;
+        this.email = email;
         this.telefone = telefone;
-        this.quantEmpregados = quantEmpregados;
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
         this.codCidade = codCidade;
-        this.codFilial = codFilial;
+        this.codCliente = codCliente;
     }
 }
