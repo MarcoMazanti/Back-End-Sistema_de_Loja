@@ -1,10 +1,6 @@
 package SistemaLoja.BackEnd.Entity.Plain.Cliente;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Max;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,28 +16,28 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank
-    @Max(255)
+    @Size(max = 255)
     private String nome;
     @NotBlank
     @Size(min = 11, max = 14)
     private String cpfOrCnpj;
     @NotBlank
-    @Max(255)
+    @Size(max = 255)
     private String email;
     @Size(min = 9, max = 15)
     private String telefone;
-    @NotBlank
+    @Column(name = "full_adress", columnDefinition = "TEXT", nullable = false)
     private String fullAdress;
     @NotBlank
-    @Max(3)
+    @Size(max = 3)
     private String codCountry;
     @NotBlank
-    @Max(3)
+    @Size(max = 3)
     private String codEstado;
     @NotBlank
-    @Max(3)
+    @Size(max = 3)
     private String codCidade;
-    @Max(25)
+    @Size(max = 3)
     private String codCliente;
 
     // Responsável pela volta do ClienteRecordTwo quando descriptografar

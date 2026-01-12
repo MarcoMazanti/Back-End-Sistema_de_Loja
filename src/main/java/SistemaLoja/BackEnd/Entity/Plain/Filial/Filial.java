@@ -1,10 +1,6 @@
 package SistemaLoja.BackEnd.Entity.Plain.Filial;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Max;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -26,18 +22,18 @@ public class Filial {
     @Size(min = 9, max = 15)
     private String telefone;
     private int quantEmpregados;
-    @NotBlank
+    @Column(name = "full_adress", columnDefinition = "TEXT", nullable = false)
     private String fullAdress;
     @NotBlank
-    @Max(3)
+    @Size(max = 3)
     private String codCountry;
     @NotBlank
-    @Max(3)
+    @Size(max = 3)
     private String codEstado;
     @NotBlank
-    @Max(3)
+    @Size(max = 3)
     private String codCidade;
-    @Max(21)
+    @Size(max = 21)
     private String codFilial;
 
     // Responsável pela volta da FilialRecordTwo quando descriptografar

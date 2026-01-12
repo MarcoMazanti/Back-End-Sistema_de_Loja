@@ -4,9 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank
-    @Max(255)
+    @Size(max = 255)
     private String nome;
     @NotNull
     private int idFilial;
@@ -32,7 +32,7 @@ public class Estoque {
     private BigDecimal preco;
     private int quantidade;
     private String descricao;
-    @Max(23)
+    @Size(max = 23)
     private String codItem;
 
     // Responsável pela volta do EstoqueRecordTwo quando descriptografar
