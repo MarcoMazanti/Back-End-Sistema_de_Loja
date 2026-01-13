@@ -1,9 +1,7 @@
 package SistemaLoja.BackEnd.Entity.Plain.Pagamento;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,9 +23,12 @@ public class Pagamento {
     @NotNull
     private int idFilial;
     @NotNull
+    @Digits(integer = 8, fraction = 2)
     private BigDecimal precoTotal;
+    @Digits(integer = 8, fraction = 2)
     private BigDecimal precoPago;
     private Date dataCompra;
+    @Column(name = "cod_pagamento", length = 24, insertable = false, updatable = false)
     private String codPagamento;
 
     // Responsável pela volta do PagamentoRecordOne quando descriptografar

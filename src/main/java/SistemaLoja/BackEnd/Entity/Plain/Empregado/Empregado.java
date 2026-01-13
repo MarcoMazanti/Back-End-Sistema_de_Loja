@@ -39,7 +39,7 @@ public class Empregado {
     private Integer filialId;
     private Date aniversario;
     private Date dataAdimissao;
-    @Size(max = 24)
+    @Column(name = "cod_empregado", length = 24, insertable = false, updatable = false)
     private String codEmpregado;
 
     // Responsável apenas pelos campos NOT NULL no banco

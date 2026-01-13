@@ -3,22 +3,14 @@ package SistemaLoja.BackEnd.Entity.Encripted.Estoque;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record EstoqueRecordThree(String id, String nome, String idFilial, String idFornecedor, String preco, String quantidade, String descricao, String codItem) {
+public record EstoqueRecordThree(String nome, String preco, String descricao, String codItem) {
     @JsonCreator
-    public EstoqueRecordThree(@JsonProperty("id") String id,
-                              @JsonProperty("nome") String nome,
-                              @JsonProperty("idFilial") String idFilial,
-                              @JsonProperty("idFornecedor") String idFornecedor,
+    public EstoqueRecordThree(@JsonProperty("nome") String nome,
                               @JsonProperty("preco") String preco,
-                              @JsonProperty("quantidade") String quantidade,
                               @JsonProperty("descricao") String descricao,
                               @JsonProperty("codItem") String codItem) {
-        this.id = id;
         this.nome = nome;
-        this.idFilial = idFilial;
-        this.idFornecedor = idFornecedor;
         this.preco = preco;
-        this.quantidade = quantidade;
         this.descricao = descricao;
         this.codItem = codItem;
     }

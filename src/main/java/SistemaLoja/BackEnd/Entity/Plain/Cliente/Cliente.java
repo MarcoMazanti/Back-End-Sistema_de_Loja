@@ -37,7 +37,7 @@ public class Cliente {
     @NotBlank
     @Size(max = 3)
     private String codCidade;
-    @Size(max = 3)
+    @Column(name = "cod_cliente", length = 25, insertable = false, updatable = false)
     private String codCliente;
 
     // Responsável pela volta do ClienteRecordTwo quando descriptografar

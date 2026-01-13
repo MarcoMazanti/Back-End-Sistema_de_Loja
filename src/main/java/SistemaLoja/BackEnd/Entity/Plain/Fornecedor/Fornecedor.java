@@ -37,7 +37,7 @@ public class Fornecedor {
     @NotBlank
     @Size(max = 3)
     private String codCidade;
-    @Size(max = 25)
+    @Column(name = "cod_fornecedor", length = 25, insertable = false, updatable = false)
     private String codForncedor;
 
     // Responsável pela volta do FornecedorRecordTwo quando descriptografar

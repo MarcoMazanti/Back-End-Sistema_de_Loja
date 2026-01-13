@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class ItemPagamento {
     @NotNull
     private int quantidade;
     @NotNull
+    @Digits(integer = 6, fraction = 2)
     private BigDecimal preco;
 
     // Responsável quando for envio de dados completos para cadastro

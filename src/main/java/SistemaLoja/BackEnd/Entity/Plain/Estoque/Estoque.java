@@ -1,9 +1,6 @@
 package SistemaLoja.BackEnd.Entity.Plain.Estoque;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,7 +29,7 @@ public class Estoque {
     private BigDecimal preco;
     private int quantidade;
     private String descricao;
-    @Size(max = 23)
+    @Column(name = "cod_item", length = 23, insertable = false, updatable = false)
     private String codItem;
 
     // Responsável pela volta do EstoqueRecordTwo quando descriptografar

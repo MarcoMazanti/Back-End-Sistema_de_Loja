@@ -33,7 +33,7 @@ public class Filial {
     @NotBlank
     @Size(max = 3)
     private String codCidade;
-    @Size(max = 21)
+    @Column(name = "cod_filial", length = 21, insertable = false, updatable = false)
     private String codFilial;
 
     // Responsável pela volta da FilialRecordTwo quando descriptografar
