@@ -1,15 +1,16 @@
-# Modelo de um Sistema Genérioco de Loja
+# Sistema de Gerenciamento de Loja
 - - -
 ### Objetivos
 - [ ] Aprimorar o conhecimento em APIs REST
 - [ ] Compreender criptografía híbrida
 - [ ] Aprofundamento em prototipação de Serviços
 - [ ] Aprimoramento da documentação
+- [ ] Aprender JUnit e Mockito
 
 ### Objetivos Secundários
 - [ ] Utilizar a usar Salt-Hash
-- [ ] Utilizar Criptografia Simétrica e Assimétrica
 - [ ] Aprofundamento do versionamento Git
+
 - - -
 
 ### Tecnologias
@@ -18,6 +19,27 @@
 - PostgreSQL
 - API REST
 - Criptografia Híbrida
+
+- - -
+
+### Ordem Desenvolvimento:
+1. Criar os endpoints padrões de cada entidade 
+2. Criar sistemas para enviar apenas os records com base no ModelRecord do Headers
+3. Adicionar criptografia
+4. Adicionar Entidade de Payload no response e na hora de receber o request
+
+### Ordem Entidades a Desenvolver:
+1. Filial
+2. Empregado
+3. Cliente
+4. Fornecedor
+5. Estoque
+6. Pagamento
+7. Item Pagamento
+
+### Detalhes para passagem de Homologação
+A cada entidade, repository, controller, service e testados desenvolvidos, estarei enviando para a próxima etapa.
+Será desenvolvido em Ordem de Desenvolvimento e cada item sendo feito em Ordem de Entidades.
 
 - - -
 
