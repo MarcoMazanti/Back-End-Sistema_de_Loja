@@ -1,9 +1,6 @@
 package SistemaLoja.BackEnd.Configuration;
 
-import SistemaLoja.BackEnd.Exception.RegistroInexistenteException;
-import SistemaLoja.BackEnd.Exception.RegistroJaExistenteException;
-import SistemaLoja.BackEnd.Exception.RequerinteNaoAutorizadoException;
-import SistemaLoja.BackEnd.Exception.TabelaVaziaException;
+import SistemaLoja.BackEnd.Exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,6 +30,12 @@ public class GloblaExpectionHandler {
     @ExceptionHandler(RegistroJaExistenteException.class)
     public ResponseEntity<String> handleRegistroJaExistente(RegistroJaExistenteException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    // Retorna 406
+    @ExceptionHandler(AtualizacaoNaoPermitidaException.class)
+    public ResponseEntity<String> handleAtualizacaoNaoPermitida(AtualizacaoNaoPermitidaException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
     }
 
     // Retorna erros genéricos de maneira formatada

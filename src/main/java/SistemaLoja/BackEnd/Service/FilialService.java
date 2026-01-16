@@ -3,10 +3,7 @@ package SistemaLoja.BackEnd.Service;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
 import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
-import SistemaLoja.BackEnd.Exception.RegistroInexistenteException;
-import SistemaLoja.BackEnd.Exception.RegistroJaExistenteException;
-import SistemaLoja.BackEnd.Exception.RequerinteNaoAutorizadoException;
-import SistemaLoja.BackEnd.Exception.TabelaVaziaException;
+import SistemaLoja.BackEnd.Exception.*;
 import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
 import SistemaLoja.BackEnd.Repository.FilialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +26,19 @@ public class FilialService {
         return listaFiliais;
     }
 
+    public Filial obterFilialById(Integer id) {
+        Optional<Filial> optionalFilial = filialRepository.findById(id);
+
+        if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Registro Filial não encontrado pelo ID: " + id);
+
+        return optionalFilial.get();
+    }
+
     public Filial publicarNovaFilial(Integer idRequerinte, Filial filial) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Filial> optionalFilial = filialRepository.findByCnpj(filial.getCnpj());
-        if (optionalFilial.isPresent()) throw new RegistroJaExistenteException(("Registro de Filial já existente!"));
+        if (optionalFilial.isPresent()) throw new RegistroJaExistenteException("Registro de Filial já existente!");
 
         return filialRepository.save(filial);
     }
@@ -44,18 +49,21 @@ public class FilialService {
         Optional<Filial> optionalFilial = filialRepository.findById(filial.getId());
 
         if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Endpoint apenas para atualização e a filial enviada é inexistente!");
+        Filial filialAntiga = optionalFilial.get();
+
+        if (!filialAntiga.equals(filial)) throw new AtualizacaoNaoPermitidaException("Não é permitido alterar campos UNIQUE!");
 
         return filialRepository.save(filial);
     }
 
-    public void deletarFilial(Integer idRequerinte, Filial filial) {
+    public void deletarFilial(Integer idRequerinte, Integer id) {
         verificarPermissaoRequerinte(idRequerinte);
 
-        Optional<Filial> optionalFilial = filialRepository.findById(filial.getId());
+        Optional<Filial> optionalFilial = filialRepository.findById(id);
 
         if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Endpoint apenas para deletar e a filial enviada já é inexistente!");
 
-        filialRepository.delete(filial);
+        filialRepository.deleteById(id);
     }
 
     private void verificarPermissaoRequerinte(Integer idRequerinte) {

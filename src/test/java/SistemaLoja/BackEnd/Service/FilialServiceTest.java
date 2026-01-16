@@ -147,9 +147,9 @@ class FilialServiceTest {
         Filial filial = new Filial(1, "12345678901234", "18996357788", 10, "Endereço Completo",
                 "BR", "SP", "SP", "BR-SP-SP-FIL-1");
         Mockito.when(filialRepository.findById(anyInt())).thenReturn(Optional.of(filial));
-        Mockito.doNothing().when(filialRepository).delete(any());
+        Mockito.doNothing().when(filialRepository).deleteById(anyInt());
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
-        filialService.deletarFilial(2, filial);
+        filialService.deletarFilial(2, filial.getId());
     }
 }

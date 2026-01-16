@@ -21,6 +21,11 @@ public class FilialController {
         return ResponseEntity.status(HttpStatus.OK).body(filialService.obterTodasFiliais());
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Filial> getByIdFilial(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(filialService.obterFilialById(id));
+    }
+
     @PostMapping("/{idRequerinte}")
     public ResponseEntity<Filial> postNewFilial(@PathVariable Integer idRequerinte, @RequestBody @Valid Filial filial) {
         return ResponseEntity.status(HttpStatus.OK).body(filialService.publicarNovaFilial(idRequerinte, filial));
@@ -31,9 +36,9 @@ public class FilialController {
         return ResponseEntity.status(HttpStatus.OK).body(filialService.atualizarFilial(idRequerinte, filial));
     }
 
-    @DeleteMapping("/{idRequerinte}")
-    public ResponseEntity<String> deleteFilial(@PathVariable Integer idRequerinte, @RequestBody @Valid Filial filial) {
-        filialService.deletarFilial(idRequerinte, filial);
+    @DeleteMapping("/{idRequerinte}/id/{id}")
+    public ResponseEntity<String> deleteFilial(@PathVariable Integer idRequerinte, @PathVariable Integer id) {
+        filialService.deletarFilial(idRequerinte, id);
         return ResponseEntity.status(HttpStatus.OK).body("Deletado!");
     }
 }

@@ -1,5 +1,6 @@
 package SistemaLoja.BackEnd.Entity.Plain.Filial;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,9 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "cnpj", "telefone", "quantEmpregados", "fullAdress", "codCountry", "codEstado", "codCidade", "codFilial"})
 @Entity(name = "filial")
 public class Filial {
     @Id
@@ -42,8 +46,8 @@ public class Filial {
 
         this.id = Integer.parseInt(listaDados[4]);
         this.codFilial = codFilial;
-        this.cnpj = cnpj;
-        this.telefone = telefone;
+        this.cnpj = limparString(cnpj);
+        this.telefone = limparString(telefone);
         this.quantEmpregados = quantEmpregados;
         this.fullAdress = fullAdress;
         this.codCountry = listaDados[0];
@@ -53,8 +57,8 @@ public class Filial {
 
     // Responsável apenas pelos campos NOT NULL no banco
     public Filial(String cnpj, String telefone, String fullAdress, String codCountry, String codEstado, String codCidade) {
-        this.cnpj = cnpj;
-        this.telefone = telefone;
+        this.cnpj = limparString(cnpj);
+        this.telefone = limparString(telefone);
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
@@ -63,13 +67,30 @@ public class Filial {
 
     // Responsável quando for envio de dados completos para cadastro
     public Filial(String cnpj, String telefone, int quantEmpregados, String fullAdress, String codCountry, String codEstado, String codCidade, String codFilial) {
-        this.cnpj = cnpj;
-        this.telefone = telefone;
+        this.cnpj = limparString(cnpj);
+        this.telefone = limparString(telefone);
         this.quantEmpregados = quantEmpregados;
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
         this.codCidade = codCidade;
         this.codFilial = codFilial;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Filial filial = (Filial) o;
+        return id == filial.id && Objects.equals(cnpj, filial.cnpj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cnpj);
+    }
+
+    private String limparString(String texto) {
+        if (texto == null) return null;
+        return texto.replaceAll(" ", "").replaceAll("-","").replaceAll("/","").replaceAll("\\+", "");
     }
 }
