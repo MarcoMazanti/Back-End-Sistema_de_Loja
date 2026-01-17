@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -66,5 +67,17 @@ public class Empregado {
         this.aniversario = aniversario;
         this.dataAdimissao = dataAdimissao;
         this.codEmpregado = codEmpregado;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Empregado empregado = (Empregado) o;
+        return id == empregado.id && Objects.equals(cpf, empregado.cpf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cpf);
     }
 }

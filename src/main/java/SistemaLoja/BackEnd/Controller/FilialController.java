@@ -1,4 +1,4 @@
-package SistemaLoja.BackEnd.Configuration;
+package SistemaLoja.BackEnd.Controller;
 
 import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
 import SistemaLoja.BackEnd.Service.FilialService;
