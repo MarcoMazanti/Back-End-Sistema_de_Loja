@@ -25,6 +25,11 @@ public class GloblaExpectionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    @ExceptionHandler(SenhaNaoPermitidaException.class)
+    public ResponseEntity<String> handleSenhaNaoPermitida(SenhaNaoPermitidaException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
     // Retorna 400
     @ExceptionHandler(RegistroInexistenteException.class)
     public ResponseEntity<String> handleRegistroInexistente(RegistroInexistenteException ex) {

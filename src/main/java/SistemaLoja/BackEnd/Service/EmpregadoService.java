@@ -49,7 +49,7 @@ public class EmpregadoService {
 
         if (empregadoOptional.isEmpty()) throw new RegistroInexistenteException("Não foi encontrado o empregado com base no CPF!");
 
-        if (validarSenha(login.cpf(), empregadoOptional.get().getSenha())) return empregadoOptional.get();
+        if (validarSenha(login.senha(), empregadoOptional.get().getSenha())) return empregadoOptional.get();
         throw new LoginNaoAutorizadoException("Não foi autorizado o login!");
     }
 
@@ -95,6 +95,6 @@ public class EmpregadoService {
         Optional<Empregado> optionalEmpregado = empregadoRepository.findById(idRequerinte);
 
         if (optionalEmpregado.isEmpty()) throw  new RegistroInexistenteException("Não foi encontrado o registro do requerinte!");
-        if (!optionalEmpregado.get().getCargo().equals(TipoCargo.EMPREGADO)) throw new RequerinteNaoAutorizadoException("Conta Requerinte sem permissão!");
+        if (optionalEmpregado.get().getCargo().equals(TipoCargo.EMPREGADO)) throw new RequerinteNaoAutorizadoException("Conta Requerinte sem permissão!");
     }
 }
