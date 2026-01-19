@@ -36,6 +36,11 @@ public class GloblaExpectionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
+    @ExceptionHandler(TamanhoInvalidoCampoException.class)
+    public ResponseEntity<String> handleTamanhoInvalidoCampo(TamanhoInvalidoCampoException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     // Retorna 409
     @ExceptionHandler(RegistroJaExistenteException.class)
     public ResponseEntity<String> handleRegistroJaExistente(RegistroJaExistenteException ex) {

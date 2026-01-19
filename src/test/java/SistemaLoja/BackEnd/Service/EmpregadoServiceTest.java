@@ -5,6 +5,7 @@ import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
 import SistemaLoja.BackEnd.Exception.LoginNaoAutorizadoException;
 import SistemaLoja.BackEnd.Exception.SenhaNaoPermitidaException;
+import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +69,26 @@ class EmpregadoServiceTest {
         Mockito.when(empregadoRepository.findByCpf(anyString())).thenReturn(Optional.ofNullable(empregadoList.get(0)));
 
         Assertions.assertThrows(LoginNaoAutorizadoException.class, () -> empregadoService.efetuarLogin(new Login("12345678901", "hash_adsb%3@")));
+    }
+
+    @Test
+    void cpfInvalido() {
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Empregado("nome", "0156489",
+                "senha", "email@example.com", "012345678912", new BigDecimal("1200.00"),
+                TipoCargo.DONO, 1, new Date(2006, 02, 25), new Date(), "1-EMP-N"));
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Empregado("nome", "01564890156489",
+                "senha", "email@example.com", "012345678912", new BigDecimal("1200.00"),
+                TipoCargo.DONO, 1, new Date(2006, 02, 25), new Date(), "1-EMP-N"));
+    }
+
+    @Test
+    void telefoneInvalido() {
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Empregado("nome", "01234567890",
+                "senha", "email@example.com", "012345", new BigDecimal("1200.00"),
+                TipoCargo.DONO, 1, new Date(2006, 02, 25), new Date(), "1-EMP-N"));
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Empregado("nome", "01234567890",
+                "senha", "email@example.com", "012345012345012345", new BigDecimal("1200.00"),
+                TipoCargo.DONO, 1, new Date(2006, 02, 25), new Date(), "1-EMP-N"));
     }
 
     // Teste das funções de EmpregadoService
