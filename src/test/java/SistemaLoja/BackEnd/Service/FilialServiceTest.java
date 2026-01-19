@@ -63,7 +63,7 @@ class FilialServiceTest {
     void retornarExceptionTabelaVazia() {
         Mockito.when(filialRepository.findAll()).thenReturn(new ArrayList<>());
 
-        Assertions.assertThrows(TabelaVaziaException.class, () -> filialService.listar());
+        Assertions.assertThrows(TabelaVaziaException.class, () -> filialService.obterTodasFiliais());
     }
 
     @Test
@@ -71,8 +71,8 @@ class FilialServiceTest {
     void retornarExceptionRequerinteNaoAutorizado() {
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(RegistroInexistenteException.class, () -> filialService.salvar(1, new Filial()));
-        Assertions.assertThrows(RegistroInexistenteException.class, () -> filialService.salvar(3, new Filial()));
+        Assertions.assertThrows(RegistroInexistenteException.class, () -> filialService.publicarNovaFilial(1, new Filial()));
+        Assertions.assertThrows(RegistroInexistenteException.class, () -> filialService.publicarNovaFilial(3, new Filial()));
 
     }
 
@@ -81,7 +81,7 @@ class FilialServiceTest {
     void retornarExceptionRegistroInexistenteEmpregado() {
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(RegistroInexistenteException.class, () -> filialService.salvar(4, new Filial()));
+        Assertions.assertThrows(RegistroInexistenteException.class, () -> filialService.publicarNovaFilial(4, new Filial()));
     }
 
     @Test
@@ -92,7 +92,7 @@ class FilialServiceTest {
         Mockito.when(filialRepository.findById(anyInt())).thenReturn(Optional.empty());
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
-        Assertions.assertThrows(RegistroInexistenteException.class, ()-> filialService.atualizar(2, filialAtualizada));
+        Assertions.assertThrows(RegistroInexistenteException.class, ()-> filialService.atualizarFilial(2, filialAtualizada));
     }
 
     @Test
@@ -103,7 +103,7 @@ class FilialServiceTest {
         Mockito.when(filialRepository.findByCnpj(anyString())).thenReturn(Optional.ofNullable(filialList.get(0)));
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
-        Assertions.assertThrows(RegistroJaExistenteException.class, () -> filialService.salvar(2, novaFilial));
+        Assertions.assertThrows(RegistroJaExistenteException.class, () -> filialService.publicarNovaFilial(2, novaFilial));
     }
 
     @Test
@@ -129,7 +129,7 @@ class FilialServiceTest {
     @DisplayName("Obter todas as Filiais")
     void obterTodasFiliais() {
         Mockito.when(filialRepository.findAll()).thenReturn(filialList);
-        List<Filial> listaFiliais = filialService.listar();
+        List<Filial> listaFiliais = filialService.obterTodasFiliais();
 
         Assertions.assertEquals(2, listaFiliais.size());
     }
@@ -141,7 +141,7 @@ class FilialServiceTest {
         Mockito.when(filialRepository.save(novaFilial)).thenReturn(novaFilial);
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
-        Filial filial = filialService.salvar(2, novaFilial);
+        Filial filial = filialService.publicarNovaFilial(2, novaFilial);
 
         Assertions.assertEquals(novaFilial, filial);
     }
@@ -155,7 +155,7 @@ class FilialServiceTest {
         Mockito.when(filialRepository.findById(anyInt())).thenReturn(Optional.of(filialAtualizada));
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
-        Filial filial = filialService.atualizar(2, filialAtualizada);
+        Filial filial = filialService.atualizarFilial(2, filialAtualizada);
 
         Assertions.assertEquals(filialAtualizada, filial);
     }
@@ -169,6 +169,6 @@ class FilialServiceTest {
         Mockito.doNothing().when(filialRepository).deleteById(anyInt());
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
-        filialService.remover(2, filial.getId());
+        filialService.deletarFilial(2, filial.getId());
     }
 }

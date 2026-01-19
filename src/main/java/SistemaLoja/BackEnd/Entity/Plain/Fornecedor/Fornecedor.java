@@ -1,18 +1,14 @@
 package SistemaLoja.BackEnd.Entity.Plain.Fornecedor;
 
 import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.Objects;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"id", "nome", "cpfOrCnpj", "email", "telefone", "fullAdress", "codCountry", "codEstado", "codCidade", "codFornecedor"})
 @Entity(name = "fornecedor")
 public class Fornecedor {
     @Id
@@ -110,17 +106,5 @@ public class Fornecedor {
 
         if (telefoneRefeito.length() < 9 || telefoneRefeito.length() > 15) throw new TamanhoInvalidoCampoException("Número de telefone inválido!");
         this.telefone = telefoneRefeito;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Fornecedor that = (Fornecedor) o;
-        return id == that.id && Objects.equals(cpfOrCnpj, that.cpfOrCnpj);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, cpfOrCnpj);
     }
 }
