@@ -83,6 +83,11 @@ public class Cliente {
     }
 
     public void setCpfOrCnpj(@NotBlank String cpfOrCnpj) {
+        if (cpfOrCnpj == null) {
+            this.cpfOrCnpj = null;
+            return;
+        }
+
         String regex = "[^0-9]";
         String cpfOrCnpjRefeito = cpfOrCnpj.replaceAll(regex, "");
 
@@ -91,6 +96,11 @@ public class Cliente {
     }
 
     public void setTelefone(String telefone) {
+        if (telefone == null) {
+            this.telefone = null;
+            return;
+        }
+
         String regex = "[^0-9]";
         String telefoneRefeito = telefone.replaceAll(regex, "");
 
