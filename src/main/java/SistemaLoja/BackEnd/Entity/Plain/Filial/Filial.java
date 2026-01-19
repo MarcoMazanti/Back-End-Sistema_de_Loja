@@ -79,6 +79,11 @@ public class Filial {
     }
 
     public void setCnpj(@NotBlank String cnpj) {
+        if (cnpj == null) {
+            this.cnpj = null;
+            return;
+        }
+
         String regex = "[^0-9]";
         String cnpjRefeito = cnpj.replaceAll(regex, "");
 
@@ -87,6 +92,11 @@ public class Filial {
     }
 
     public void setTelefone(String telefone) {
+        if (telefone == null) {
+            this.telefone = null;
+            return;
+        }
+
         String regex = "[^0-9]";
         String telefoneRefeito = telefone.replaceAll(regex, "");
 

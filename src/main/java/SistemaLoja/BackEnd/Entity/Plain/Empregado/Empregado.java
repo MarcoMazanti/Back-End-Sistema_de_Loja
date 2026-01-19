@@ -1,8 +1,10 @@
 package SistemaLoja.BackEnd.Entity.Plain.Empregado;
 
 import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -13,6 +15,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "nome", "cpf", "senha", "email", "telefone", "salario", "cargo", "filialId", "aniversario", "dataAdimissao", "codEmpregado"})
 @Entity(name = "empregado")
 public class Empregado {
     @Id
@@ -34,10 +37,10 @@ public class Empregado {
     private String email;
     @Size(min = 9, max = 15)
     private String telefone;
-    @NotBlank
+    @NotNull
     private BigDecimal salario;
     private TipoCargo cargo;
-    @NotBlank
+    @NotNull
     private Integer filialId;
     private Date aniversario;
     private Date dataAdimissao;
@@ -72,6 +75,11 @@ public class Empregado {
     }
 
     public void setCpf(@NotBlank String cpf) {
+        if (cpf == null) {
+            this.cpf = null;
+            return;
+        }
+
         String regex = "[^0-9]";
         String cpfRefeito = cpf.replaceAll(regex, "");
 
@@ -80,6 +88,11 @@ public class Empregado {
     }
 
     public void setTelefone(String telefone) {
+        if (telefone == null) {
+            this.telefone = null;
+            return;
+        }
+
         String regex = "[^0-9]";
         String telefoneRefeito = telefone.replaceAll(regex, "");
 
