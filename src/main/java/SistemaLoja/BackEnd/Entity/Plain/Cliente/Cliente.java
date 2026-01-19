@@ -1,14 +1,18 @@
 package SistemaLoja.BackEnd.Entity.Plain.Cliente;
 
 import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Objects;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "nome", "cpfOrCnpj", "email", "telefone", "fullAdress", "codCountry", "codEstado", "codCidade", "codCliente"})
 @Entity(name = "cliente")
 public class Cliente {
     @Id
@@ -21,6 +25,7 @@ public class Cliente {
     @NotBlank
     @Size(min = 11, max = 14)
     @Setter(AccessLevel.NONE)
+    @Column(name = "cpf_or_cnpj")
     private String cpfOrCnpj;
     @NotBlank
     @Size(max = 255)
@@ -106,5 +111,17 @@ public class Cliente {
 
         if (telefoneRefeito.length() < 9 || telefoneRefeito.length() > 15) throw new TamanhoInvalidoCampoException("Número de telefone inválido!");
         this.telefone = telefoneRefeito;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id && Objects.equals(cpfOrCnpj, cliente.cpfOrCnpj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cpfOrCnpj);
     }
 }
