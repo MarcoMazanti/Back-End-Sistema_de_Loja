@@ -1,11 +1,10 @@
 package SistemaLoja.BackEnd.Entity.Plain.Empregado;
 
+import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,12 +17,14 @@ import java.util.Objects;
 public class Empregado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private int id;
     @NotBlank
     @Size(max = 255)
     private String nome;
     @NotBlank
     @Size(min = 11, max = 11)
+    @Setter(AccessLevel.NONE)
     private String cpf;
     @NotBlank
     @Size(max = 200)
@@ -43,10 +44,11 @@ public class Empregado {
     @Column(name = "cod_empregado", length = 24, insertable = false, updatable = false)
     private String codEmpregado;
 
+
     // Responsável apenas pelos campos NOT NULL no banco
     public Empregado(String nome, String cpf, String senha, String email, BigDecimal salario, Integer filialId) {
         this.nome = nome;
-        this.cpf = cpf;
+        this.setCpf(cpf);
         this.senha = senha;
         this.email = email;
         this.salario = salario;
@@ -57,16 +59,32 @@ public class Empregado {
     public Empregado(String nome, String cpf, String senha, String email, String telefone, BigDecimal salario,
                      TipoCargo cargo, Integer filialId, Date aniversario, Date dataAdimissao, String codEmpregado) {
         this.nome = nome;
-        this.cpf = cpf;
+        this.setCpf(cpf);
         this.senha = senha;
         this.email = email;
-        this.telefone = telefone;
+        this.setTelefone(telefone);
         this.salario = salario;
         this.cargo = cargo;
         this.filialId = filialId;
         this.aniversario = aniversario;
         this.dataAdimissao = dataAdimissao;
         this.codEmpregado = codEmpregado;
+    }
+
+    public void setCpf(@NotBlank String cpf) {
+        String regex = "[^0-9]";
+        String cpfRefeito = cpf.replaceAll(regex, "");
+
+        if (!(cpfRefeito.length() == 11)) throw new TamanhoInvalidoCampoException("CPF inválido!");
+        this.cpf = cpfRefeito;
+    }
+
+    public void setTelefone(String telefone) {
+        String regex = "[^0-9]";
+        String telefoneRefeito = telefone.replaceAll(regex, "");
+
+        if (telefoneRefeito.length() < 9 || telefoneRefeito.length() > 15) throw new TamanhoInvalidoCampoException("Número de telefone inválido!");
+        this.telefone = telefoneRefeito;
     }
 
     @Override

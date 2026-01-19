@@ -1,11 +1,10 @@
 package SistemaLoja.BackEnd.Entity.Plain.Fornecedor;
 
+import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -14,12 +13,14 @@ import lombok.NoArgsConstructor;
 public class Fornecedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private int id;
     @NotBlank
     @Size(max = 255)
     private String nome;
     @NotBlank
     @Size(min = 11, max = 14)
+    @Setter(AccessLevel.NONE)
     private String cpfOrCnpj;
     @NotBlank
     @Size(max = 255)
@@ -47,9 +48,9 @@ public class Fornecedor {
         this.id = Integer.parseInt(listaDados[4]);
         this.codForncedor = codForncedor;
         this.nome = nome;
-        this.cpfOrCnpj = cpfOrCnpj;
+        this.setCpfOrCnpj(cpfOrCnpj);
         this.email = email;
-        this.telefone = telefone;
+        this.setTelefone(telefone);
         this.fullAdress = fullAdress;
         this.codCountry = listaDados[0];
         this.codEstado = listaDados[1];
@@ -59,7 +60,7 @@ public class Fornecedor {
     // Responsável apenas pelos campos NOT NULL no banco
     public Fornecedor(String nome, String cpfOrCnpj, String email, String fullAdress, String codCountry, String codEstado, String codCidade) {
         this.nome = nome;
-        this.cpfOrCnpj = cpfOrCnpj;
+        this.setCpfOrCnpj(cpfOrCnpj);
         this.email = email;
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
@@ -71,13 +72,29 @@ public class Fornecedor {
     public Fornecedor(String nome, String cpfOrCnpj, String email, String telefone, String fullAdress, String codCountry,
                    String codEstado, String codCidade, String codForncedor) {
         this.nome = nome;
-        this.cpfOrCnpj = cpfOrCnpj;
+        this.setCpfOrCnpj(cpfOrCnpj);
         this.email = email;
-        this.telefone = telefone;
+        this.setTelefone(telefone);
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
         this.codCidade = codCidade;
         this.codForncedor = codForncedor;
+    }
+
+    public void setCpfOrCnpj(@NotBlank String cpfOrCnpj) {
+        String regex = "[^0-9]";
+        String cpfOrCnpjRefeito = cpfOrCnpj.replaceAll(regex, "");
+
+        if (!(cpfOrCnpjRefeito.length() == 11 || cpfOrCnpjRefeito.length() == 14)) throw new TamanhoInvalidoCampoException("CPF ou CNPJ inválido!");
+        this.cpfOrCnpj = cpfOrCnpjRefeito;
+    }
+
+    public void setTelefone(String telefone) {
+        String regex = "[^0-9]";
+        String telefoneRefeito = telefone.replaceAll(regex, "");
+
+        if (telefoneRefeito.length() < 9 || telefoneRefeito.length() > 15) throw new TamanhoInvalidoCampoException("Número de telefone inválido!");
+        this.telefone = telefoneRefeito;
     }
 }
