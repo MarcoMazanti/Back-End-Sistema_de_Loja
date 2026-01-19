@@ -18,27 +18,27 @@ public class FilialController {
 
     @GetMapping()
     public ResponseEntity<List<Filial>> getAllFilial() {
-        return ResponseEntity.status(HttpStatus.OK).body(filialService.obterTodasFiliais());
+        return ResponseEntity.status(HttpStatus.OK).body(filialService.listar());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Filial> getByIdFilial(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(filialService.obterFilialById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(filialService.buscarPorId(id));
     }
 
     @PostMapping("/{idRequerinte}")
     public ResponseEntity<Filial> postNewFilial(@PathVariable Integer idRequerinte, @RequestBody @Valid Filial filial) {
-        return ResponseEntity.status(HttpStatus.OK).body(filialService.publicarNovaFilial(idRequerinte, filial));
+        return ResponseEntity.status(HttpStatus.OK).body(filialService.salvar(idRequerinte, filial));
     }
 
     @PutMapping("/{idRequerinte}")
     public ResponseEntity<Filial> putAlterarFilial(@PathVariable Integer idRequerinte, @RequestBody @Valid Filial filial) {
-        return ResponseEntity.status(HttpStatus.OK).body(filialService.atualizarFilial(idRequerinte, filial));
+        return ResponseEntity.status(HttpStatus.OK).body(filialService.atualizar(idRequerinte, filial));
     }
 
     @DeleteMapping("/{idRequerinte}/id/{id}")
-    public ResponseEntity<String> deleteFilial(@PathVariable Integer idRequerinte, @PathVariable Integer id) {
-        filialService.deletarFilial(idRequerinte, id);
-        return ResponseEntity.status(HttpStatus.OK).body("Deletado!");
+    public ResponseEntity<Void> deleteFilial(@PathVariable Integer idRequerinte, @PathVariable Integer id) {
+        filialService.remover(idRequerinte, id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
