@@ -4,8 +4,8 @@ import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
 import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
 import SistemaLoja.BackEnd.Exception.*;
+import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
 import SistemaLoja.BackEnd.Repository.FilialRepository;
-import SistemaLoja.BackEnd.Service.Interface.RequestRequerinteInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +13,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FilialService extends ServiceAbstract<Filial> implements RequestRequerinteInterface<Filial> {
+public class FilialService {
     @Autowired
     private FilialRepository filialRepository;
+    @Autowired
+    private EmpregadoRepository empregadoRepository;
 
-    @Override
-    public List<Filial> listar() {
+    public List<Filial> obterTodasFiliais() {
         List<Filial> listaFiliais = filialRepository.findAll();
 
         if (listaFiliais.isEmpty()) throw new TabelaVaziaException("Tabela Filial está vazia!");
         return listaFiliais;
     }
 
-    @Override
-    public Filial buscarPorId(Integer id) {
+    public Filial obterFilialById(Integer id) {
         Optional<Filial> optionalFilial = filialRepository.findById(id);
 
         if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Registro Filial não encontrado pelo ID: " + id);
+
         return optionalFilial.get();
     }
 
-    @Override
-    public Filial salvar(Integer idRequerinte, Filial filial) {
+    public Filial publicarNovaFilial(Integer idRequerinte, Filial filial) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Filial> optionalFilial = filialRepository.findByCnpj(filial.getCnpj());
@@ -43,8 +43,7 @@ public class FilialService extends ServiceAbstract<Filial> implements RequestReq
         return filialRepository.save(filial);
     }
 
-    @Override
-    public Filial atualizar(Integer idRequerinte, Filial filial) {
+    public Filial atualizarFilial(Integer idRequerinte, Filial filial) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Filial> optionalFilial = filialRepository.findById(filial.getId());
@@ -57,18 +56,17 @@ public class FilialService extends ServiceAbstract<Filial> implements RequestReq
         return filialRepository.save(filial);
     }
 
-    @Override
-    public void remover(Integer idRequerinte, Integer id) {
+    public void deletarFilial(Integer idRequerinte, Integer id) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Filial> optionalFilial = filialRepository.findById(id);
+
         if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Endpoint apenas para deletar e a filial enviada já é inexistente!");
 
         filialRepository.deleteById(id);
     }
 
-    @Override
-    protected void verificarPermissaoRequerinte(Integer idRequerinte) {
+    private void verificarPermissaoRequerinte(Integer idRequerinte) {
         Optional<Empregado> optionalEmpregado = empregadoRepository.findById(idRequerinte);
 
         if (optionalEmpregado.isEmpty()) throw new RegistroInexistenteException("Impossível acessar conta de empregado com base no idRequerinte!");

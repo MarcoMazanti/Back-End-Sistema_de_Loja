@@ -57,10 +57,10 @@ class EmpregadoServiceTest {
                 new BigDecimal("9200.00"), 1);
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(0)));
 
-        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.salvar(1, empregado1));
-        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.salvar(1, empregado2));
-        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.salvar(1, empregado3));
-        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.salvar(1, empregado4));
+        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.postarNovoEmpregado(1, empregado1));
+        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.postarNovoEmpregado(1, empregado2));
+        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.postarNovoEmpregado(1, empregado3));
+        Assertions.assertThrows(SenhaNaoPermitidaException.class, () -> empregadoService.postarNovoEmpregado(1, empregado4));
     }
 
     // Teste do LoginNaoAutorizadoException
@@ -96,21 +96,21 @@ class EmpregadoServiceTest {
     void coletarTodosEmpregados() {
         Mockito.when(empregadoRepository.findAll()).thenReturn(empregadoList);
 
-        Assertions.assertEquals(empregadoList, empregadoService.listar());
+        Assertions.assertEquals(empregadoList, empregadoService.coletarTodosEmpregados());
     }
 
     @Test
     void coletarEmpregadoById() {
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(0)));
 
-        Assertions.assertEquals(empregadoList.get(0), empregadoService.buscarPorId(1));
+        Assertions.assertEquals(empregadoList.get(0), empregadoService.coletarEmpregadoById(1));
     }
 
     @Test
     void coletarAllEmpregadoByFilialId() {
         Mockito.when(empregadoRepository.findAllByFilialId(anyInt())).thenReturn(empregadoList);
 
-        Assertions.assertEquals(empregadoList, empregadoService.listarPorFilialId(1));
+        Assertions.assertEquals(empregadoList, empregadoService.coletarAllEmpregadoByFilialId(1));
     }
 
     @Test
@@ -127,7 +127,7 @@ class EmpregadoServiceTest {
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(0)));
         Mockito.when(empregadoRepository.save(novoEmpregado)).thenReturn(novoEmpregado);
 
-        Assertions.assertEquals(novoEmpregado, empregadoService.salvar(1, novoEmpregado));
+        Assertions.assertEquals(novoEmpregado, empregadoService.postarNovoEmpregado(1, novoEmpregado));
     }
 
     @Test
@@ -139,7 +139,7 @@ class EmpregadoServiceTest {
         Mockito.when(empregadoRepository.findByCpf(anyString())).thenReturn(Optional.ofNullable(empregadoList.get(0)));
         Mockito.when(empregadoRepository.save(empregadoAtualizado)).thenReturn(empregadoAtualizado);
 
-        Assertions.assertEquals(empregadoAtualizado, empregadoService.atualizar(1, empregadoAtualizado));
+        Assertions.assertEquals(empregadoAtualizado, empregadoService.atualizarEmpregado(1, empregadoAtualizado));
     }
 
     @Test
@@ -147,6 +147,6 @@ class EmpregadoServiceTest {
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(0)));
         Mockito.doNothing().when(empregadoRepository).deleteById(anyInt());
 
-        empregadoService.remover(1, 1);
+        Assertions.assertEquals("Deletado!", empregadoService.deletarEmpregar(1, 1));
     }
 }

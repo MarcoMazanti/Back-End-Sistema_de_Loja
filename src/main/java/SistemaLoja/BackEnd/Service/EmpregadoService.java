@@ -5,7 +5,6 @@ import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
 import SistemaLoja.BackEnd.Exception.*;
 import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
-import SistemaLoja.BackEnd.Service.Interface.RequestRequerinteInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,27 +16,31 @@ import static SistemaLoja.BackEnd.Security.GerarSenhaSaltHash.encriptarSenha;
 import static SistemaLoja.BackEnd.Security.GerarSenhaSaltHash.validarSenha;
 
 @Service
-public class EmpregadoService extends ServiceAbstract<Empregado> implements RequestRequerinteInterface<Empregado> {
-    @Override
-    public List<Empregado> listar() {
+public class EmpregadoService {
+    @Autowired
+    private EmpregadoRepository empregadoRepository;
+
+    public List<Empregado> coletarTodosEmpregados() {
         List<Empregado> empregadoList = empregadoRepository.findAll();
 
         if (empregadoList.isEmpty()) throw new TabelaVaziaException("Tabela Empregado Vazia!");
+
         return empregadoList;
     }
 
-    @Override
-    public Empregado buscarPorId(Integer id) {
+    public Empregado coletarEmpregadoById(Integer id) {
         Optional<Empregado> empregadoOptional = empregadoRepository.findById(id);
 
         if (empregadoOptional.isEmpty()) throw new RegistroInexistenteException("Registro de Empregado não encontrado!");
+
         return empregadoOptional.get();
     }
 
-    public List<Empregado> listarPorFilialId(Integer filialId) {
+    public List<Empregado> coletarAllEmpregadoByFilialId(Integer filialId) {
         List<Empregado> empregadoList = empregadoRepository.findAllByFilialId(filialId);
 
         if (empregadoList.isEmpty()) throw new TabelaVaziaException("Não foi encontrado nenhum empregado desta filial!");
+
         return empregadoList;
     }
 
@@ -50,8 +53,7 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
         throw new LoginNaoAutorizadoException("Não foi autorizado o login!");
     }
 
-    @Override
-    public Empregado salvar(Integer idRequerinte, Empregado empregado) {
+    public Empregado postarNovoEmpregado(Integer idRequerinte, Empregado empregado) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Empregado> optionalEmpregado = empregadoRepository.findByCpf(empregado.getCpf());
@@ -63,8 +65,7 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
         return empregadoRepository.save(empregado);
     }
 
-    @Override
-    public Empregado atualizar(Integer idRequerinte, Empregado empregado) {
+    public Empregado atualizarEmpregado(Integer idRequerinte, Empregado empregado) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Empregado> optionalEmpregado = empregadoRepository.findByCpf(empregado.getCpf());
@@ -79,8 +80,7 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
         return empregadoRepository.save(empregado);
     }
 
-    @Override
-    public void remover(Integer idRequerinte, Integer id) {
+    public String deletarEmpregar(Integer idRequerinte, Integer id) {
         verificarPermissaoRequerinte(idRequerinte);
 
         Optional<Empregado> optionalEmpregado = empregadoRepository.findById(id);
@@ -88,5 +88,13 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
         if (optionalEmpregado.isEmpty()) throw new RegistroInexistenteException("Não possui uma conta de empregado cadastrado!");
 
         empregadoRepository.deleteById(id);
+        return "Deletado!";
+    }
+
+    private void verificarPermissaoRequerinte(Integer idRequerinte) {
+        Optional<Empregado> optionalEmpregado = empregadoRepository.findById(idRequerinte);
+
+        if (optionalEmpregado.isEmpty()) throw  new RegistroInexistenteException("Não foi encontrado o registro do requerinte!");
+        if (optionalEmpregado.get().getCargo().equals(TipoCargo.EMPREGADO)) throw new RequerinteNaoAutorizadoException("Conta Requerinte sem permissão!");
     }
 }
