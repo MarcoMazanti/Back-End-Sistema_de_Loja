@@ -20,9 +20,24 @@ public class GloblaExpectionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    @ExceptionHandler(LoginNaoAutorizadoException.class)
+    public ResponseEntity<String> handleLoginNaoAutorizado(LoginNaoAutorizadoException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(SenhaNaoPermitidaException.class)
+    public ResponseEntity<String> handleSenhaNaoPermitida(SenhaNaoPermitidaException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
     // Retorna 400
     @ExceptionHandler(RegistroInexistenteException.class)
     public ResponseEntity<String> handleRegistroInexistente(RegistroInexistenteException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(TamanhoInvalidoCampoException.class)
+    public ResponseEntity<String> handleTamanhoInvalidoCampo(TamanhoInvalidoCampoException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 

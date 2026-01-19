@@ -1,12 +1,11 @@
 package SistemaLoja.BackEnd.Entity.Plain.Filial;
 
+import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -18,9 +17,11 @@ import java.util.Objects;
 public class Filial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private int id;
     @NotBlank
     @Size(min = 14, max = 14)
+    @Setter(AccessLevel.NONE)
     private String cnpj;
     @NotBlank
     @Size(min = 9, max = 15)
@@ -46,8 +47,8 @@ public class Filial {
 
         this.id = Integer.parseInt(listaDados[4]);
         this.codFilial = codFilial;
-        this.cnpj = limparString(cnpj);
-        this.telefone = limparString(telefone);
+        this.setCnpj(cnpj);
+        this.setTelefone(telefone);
         this.quantEmpregados = quantEmpregados;
         this.fullAdress = fullAdress;
         this.codCountry = listaDados[0];
@@ -57,8 +58,8 @@ public class Filial {
 
     // Responsável apenas pelos campos NOT NULL no banco
     public Filial(String cnpj, String telefone, String fullAdress, String codCountry, String codEstado, String codCidade) {
-        this.cnpj = limparString(cnpj);
-        this.telefone = limparString(telefone);
+        this.setCnpj(cnpj);
+        this.setTelefone(telefone);
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
@@ -67,14 +68,40 @@ public class Filial {
 
     // Responsável quando for envio de dados completos para cadastro
     public Filial(String cnpj, String telefone, int quantEmpregados, String fullAdress, String codCountry, String codEstado, String codCidade, String codFilial) {
-        this.cnpj = limparString(cnpj);
-        this.telefone = limparString(telefone);
+        this.setCnpj(cnpj);
+        this.setTelefone(telefone);
         this.quantEmpregados = quantEmpregados;
         this.fullAdress = fullAdress;
         this.codCountry = codCountry;
         this.codEstado = codEstado;
         this.codCidade = codCidade;
         this.codFilial = codFilial;
+    }
+
+    public void setCnpj(@NotBlank String cnpj) {
+        if (cnpj == null) {
+            this.cnpj = null;
+            return;
+        }
+
+        String regex = "[^0-9]";
+        String cnpjRefeito = cnpj.replaceAll(regex, "");
+
+        if (!(cnpjRefeito.length() == 14)) throw new TamanhoInvalidoCampoException("CNPJ inválido!");
+        this.cnpj = cnpjRefeito;
+    }
+
+    public void setTelefone(String telefone) {
+        if (telefone == null) {
+            this.telefone = null;
+            return;
+        }
+
+        String regex = "[^0-9]";
+        String telefoneRefeito = telefone.replaceAll(regex, "");
+
+        if (telefoneRefeito.length() < 9 || telefoneRefeito.length() > 15) throw new TamanhoInvalidoCampoException("Número de telefone inválido!");
+        this.telefone = telefoneRefeito;
     }
 
     @Override
@@ -87,10 +114,5 @@ public class Filial {
     @Override
     public int hashCode() {
         return Objects.hash(id, cnpj);
-    }
-
-    private String limparString(String texto) {
-        if (texto == null) return null;
-        return texto.replaceAll(" ", "").replaceAll("-","").replaceAll("/","").replaceAll("\\+", "");
     }
 }

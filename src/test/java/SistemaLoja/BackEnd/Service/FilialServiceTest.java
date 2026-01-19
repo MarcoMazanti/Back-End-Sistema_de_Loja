@@ -6,6 +6,7 @@ import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
 import SistemaLoja.BackEnd.Exception.RegistroInexistenteException;
 import SistemaLoja.BackEnd.Exception.RegistroJaExistenteException;
 import SistemaLoja.BackEnd.Exception.TabelaVaziaException;
+import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
 import SistemaLoja.BackEnd.Repository.FilialRepository;
 import org.junit.jupiter.api.Assertions;
@@ -103,6 +104,24 @@ class FilialServiceTest {
         Mockito.when(empregadoRepository.findById(anyInt())).thenReturn(Optional.ofNullable(empregadoList.get(1)));
 
         Assertions.assertThrows(RegistroJaExistenteException.class, () -> filialService.publicarNovaFilial(2, novaFilial));
+    }
+
+    @Test
+    @DisplayName("Exception Tamanho Inválido para CNPJ")
+    void cnpjInvalido() {
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Filial("0000", "01234567890",
+                "Endereço Completo", "BR", "SP", "SP"));
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Filial("0000000000000000", "01234567890",
+                "Endereço Completo", "BR", "SP", "SP"));
+    }
+
+    @Test
+    @DisplayName("Exception Tamanho Inválido para Telefone")
+    void telefoneInvalido() {
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Filial("00000000000000", "012345",
+                "Endereço Completo", "BR", "SP", "SP"));
+        Assertions.assertThrows(TamanhoInvalidoCampoException.class, () -> new Filial("00000000000000", "012345678901560568",
+                "Endereço Completo", "BR", "SP", "SP"));
     }
 
     // Verificação dos retornos das funções de FilialService
