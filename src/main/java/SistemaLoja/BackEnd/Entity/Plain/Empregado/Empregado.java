@@ -75,7 +75,7 @@ public class Empregado {
     }
 
     public void setCpf(@NotBlank String cpf) {
-        if (cpf == null) {
+        if (cpf == null || cpf.trim().isEmpty()) {
             this.cpf = null;
             return;
         }
@@ -88,7 +88,7 @@ public class Empregado {
     }
 
     public void setTelefone(String telefone) {
-        if (telefone == null) {
+        if (telefone == null || telefone.trim().isEmpty()) {
             this.telefone = null;
             return;
         }
