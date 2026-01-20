@@ -1,5 +1,6 @@
 package SistemaLoja.BackEnd.Entity.Plain.Estoque;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,10 +8,12 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "nome", "idFilial", "idFornecedor", "preco", "quantidade", "descricao", "codItem"})
 @Entity(name = "estoque")
 public class Estoque {
     @Id
@@ -62,5 +65,17 @@ public class Estoque {
         this.quantidade = quantidade;
         this.descricao = descricao;
         this.codItem = codItem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Estoque estoque = (Estoque) o;
+        return idFilial == estoque.idFilial && idFornecedor == estoque.idFornecedor && Objects.equals(nome, estoque.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, idFilial, idFornecedor);
     }
 }

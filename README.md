@@ -1,15 +1,18 @@
 # Sistema de Gerenciamento de Loja
 - - -
-### Objetivos
-- [ ] Aprimorar o conhecimento em APIs REST
+### Objetivos Primários
+- [X] Aprimorar o conhecimento em APIs REST
 - [ ] Compreender criptografía híbrida
-- [ ] Aprofundamento em prototipação de Serviços
+- [X] Aprofundamento em prototipação de Serviços
 - [ ] Aprimoramento da documentação
-- [ ] Aprender JUnit e Mockito
+- [X] Aprender JUnit e Mockito
 
 ### Objetivos Secundários
-- [ ] Utilizar a usar Salt-Hash
-- [ ] Aprofundamento do versionamento Git
+- [X] Utilizar a usar Salt-Hash
+- [X] Aprofundamento do versionamento Git
+- [ ] Construir modelo de Filtragem
+- [ ] Construir modelo de Factories para o Request
+- [ ] Inserir limites de requisições por segundo com base no IP
 
 - - -
 
