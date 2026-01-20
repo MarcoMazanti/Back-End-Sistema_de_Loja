@@ -3,8 +3,10 @@ package SistemaLoja.BackEnd.Service;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
+import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
 import SistemaLoja.BackEnd.Exception.*;
 import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
+import SistemaLoja.BackEnd.Repository.FilialRepository;
 import SistemaLoja.BackEnd.Service.Interface.RequestRequerinteInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import static SistemaLoja.BackEnd.Security.GerarSenhaSaltHash.validarSenha;
 
 @Service
 public class EmpregadoService extends ServiceAbstract<Empregado> implements RequestRequerinteInterface<Empregado> {
+    @Autowired
+    private FilialRepository filialRepository;
+
     @Override
     public List<Empregado> listar() {
         List<Empregado> empregadoList = empregadoRepository.findAll();
@@ -60,6 +65,15 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
 
         empregado.setSenha(encriptarSenha(empregado.getSenha()));
 
+        // Adicionar o empregado na respectiva filial
+        Optional<Filial> optionalFilial = filialRepository.findById(empregado.getFilialId());
+
+        if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Não possui uma conta da filial cadastrada!");
+
+        Filial filial = optionalFilial.get();
+        filial.setQuantEmpregados(filial.getQuantEmpregados() + 1);
+
+        filialRepository.save(filial);
         return empregadoRepository.save(empregado);
     }
 
@@ -87,6 +101,15 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
 
         if (optionalEmpregado.isEmpty()) throw new RegistroInexistenteException("Não possui uma conta de empregado cadastrado!");
 
+        // Alterar a quantidade de funcionários na respectiva filial
+        Optional<Filial> optionalFilial = filialRepository.findById(optionalEmpregado.get().getFilialId());
+
+        if (optionalFilial.isEmpty()) throw new RegistroInexistenteException("Não possui uma conta da filial cadastrada!");
+
+        Filial filial = optionalFilial.get();
+        filial.setQuantEmpregados(filial.getQuantEmpregados() - 1);
+
+        filialRepository.save(filial);
         empregadoRepository.deleteById(id);
     }
 }
