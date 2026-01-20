@@ -79,7 +79,7 @@ public class Filial {
     }
 
     public void setCnpj(@NotBlank String cnpj) {
-        if (cnpj == null) {
+        if (cnpj == null || cnpj.trim().isEmpty()) {
             this.cnpj = null;
             return;
         }
@@ -92,7 +92,7 @@ public class Filial {
     }
 
     public void setTelefone(String telefone) {
-        if (telefone == null) {
+        if (telefone == null || telefone.trim().isEmpty()) {
             this.telefone = null;
             return;
         }

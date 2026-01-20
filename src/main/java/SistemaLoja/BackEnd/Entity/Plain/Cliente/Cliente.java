@@ -88,7 +88,7 @@ public class Cliente {
     }
 
     public void setCpfOrCnpj(@NotBlank String cpfOrCnpj) {
-        if (cpfOrCnpj == null) {
+        if (cpfOrCnpj == null || cpfOrCnpj.trim().isEmpty()) {
             this.cpfOrCnpj = null;
             return;
         }
@@ -101,7 +101,7 @@ public class Cliente {
     }
 
     public void setTelefone(String telefone) {
-        if (telefone == null) {
+        if (telefone == null || telefone.trim().isEmpty()) {
             this.telefone = null;
             return;
         }
