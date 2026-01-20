@@ -20,7 +20,6 @@ public class ItemPagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private int id;
-    @NotNull
     private int idPagamento;
     @NotNull
     private int idItem;
@@ -35,6 +34,13 @@ public class ItemPagamento {
     // Responsável quando for envio de dados completos para cadastro
     public ItemPagamento(int idPagamento, int idItem, String nome, int quantidade, BigDecimal preco) {
         this.idPagamento = idPagamento;
+        this.idItem = idItem;
+        this.nome = nome;
+        this.quantidade = quantidade;
+        this.preco = preco;
+    }
+
+    public ItemPagamento(int idItem, String nome, int quantidade, BigDecimal preco) {
         this.idItem = idItem;
         this.nome = nome;
         this.quantidade = quantidade;
