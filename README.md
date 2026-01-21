@@ -41,8 +41,8 @@
 7. Item Pagamento
 
 ### Detalhes para passagem de Homologação
-A cada entidade, repository, controller, service e testados desenvolvidos, estarei enviando para a próxima etapa.
-Será desenvolvido em Ordem de Desenvolvimento e cada item sendo feito em Ordem de Entidades.
+A cada entidade, repository, controller, service e testados desenvolvidos, estarei a enviar para a próxima etapa.
+Será desenvolvido em Ordem de Desenvolvimento e cada ítem sendo feito em Ordem de Entidades.
 
 - - -
 
