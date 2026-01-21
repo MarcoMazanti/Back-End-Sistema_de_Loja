@@ -53,6 +53,11 @@ public class GloblaExpectionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
     }
 
+    @ExceptionHandler(CompraReprovadaException.class)
+    public ResponseEntity<String> handleCompraReprovada(CompraReprovadaException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
+    }
+
     // Retorna erros genéricos de maneira formatada
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneric(Exception ex) {

@@ -1,5 +1,6 @@
 package SistemaLoja.BackEnd.Entity.Plain.Pagamento;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,13 +15,13 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "idPagamento", "idItem", "nome", "quantidade", "preco"})
 @Entity(name = "item_pagamento")
 public class ItemPagamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private int id;
-    @NotNull
     private int idPagamento;
     @NotNull
     private int idItem;
@@ -30,14 +31,21 @@ public class ItemPagamento {
     private int quantidade;
     @NotNull
     @Digits(integer = 6, fraction = 2)
-    private BigDecimal preco;
+    private BigDecimal precoUnit;
 
     // Responsável quando for envio de dados completos para cadastro
-    public ItemPagamento(int idPagamento, int idItem, String nome, int quantidade, BigDecimal preco) {
+    public ItemPagamento(int idPagamento, int idItem, String nome, int quantidade, BigDecimal precoUnit) {
         this.idPagamento = idPagamento;
         this.idItem = idItem;
         this.nome = nome;
         this.quantidade = quantidade;
-        this.preco = preco;
+        this.precoUnit = precoUnit;
+    }
+
+    public ItemPagamento(int idItem, String nome, int quantidade, BigDecimal precoUnit) {
+        this.idItem = idItem;
+        this.nome = nome;
+        this.quantidade = quantidade;
+        this.precoUnit = precoUnit;
     }
 }
