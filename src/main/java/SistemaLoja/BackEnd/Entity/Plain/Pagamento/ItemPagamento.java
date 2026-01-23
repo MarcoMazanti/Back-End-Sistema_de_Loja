@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"id", "idPagamento", "idItem", "nome", "quantidade", "preco"})
+@JsonPropertyOrder({"id", "idPagamento", "idItem", "nome", "quantidade", "precoUnit"})
 @Entity(name = "item_pagamento")
 public class ItemPagamento {
     @Id

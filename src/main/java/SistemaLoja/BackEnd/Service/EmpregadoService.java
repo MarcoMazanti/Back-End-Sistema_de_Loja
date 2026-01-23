@@ -2,10 +2,8 @@ package SistemaLoja.BackEnd.Service;
 
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
-import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
 import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
 import SistemaLoja.BackEnd.Exception.*;
-import SistemaLoja.BackEnd.Repository.EmpregadoRepository;
 import SistemaLoja.BackEnd.Repository.FilialRepository;
 import SistemaLoja.BackEnd.Service.Interface.RequestRequerinteInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +77,11 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
 
     @Override
     public Empregado atualizar(Integer idRequerinte, Empregado empregado) {
-        verificarPermissaoRequerinte(idRequerinte);
+        if (idRequerinte != empregado.getId()) {
+            verificarPermissaoRequerinte(idRequerinte);
+        } else {
+            verificarAlteracaoContaPropria(idRequerinte, empregado);
+        }
 
         Optional<Empregado> optionalEmpregado = empregadoRepository.findByCpf(empregado.getCpf());
 
@@ -111,5 +113,14 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
 
         filialRepository.save(filial);
         empregadoRepository.deleteById(id);
+    }
+
+    private void verificarAlteracaoContaPropria(Integer idRequerinte, Empregado empregadoAtualizar) {
+        Optional<Empregado> optionalEmpregado = empregadoRepository.findById(idRequerinte);
+
+        if (optionalEmpregado.isEmpty()) throw new RegistroInexistenteException("Não foi encontrado a conta do Requerinte!");
+        Empregado empregado = optionalEmpregado.get();
+
+        if (!empregado.alteracaoPropria(empregadoAtualizar)) throw new AtualizacaoNaoPermitidaException("Não pode alterar dados fundamentais da própria conta!");
     }
 }

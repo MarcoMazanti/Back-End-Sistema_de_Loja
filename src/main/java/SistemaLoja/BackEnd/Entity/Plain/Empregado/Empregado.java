@@ -111,4 +111,17 @@ public class Empregado {
     public int hashCode() {
         return Objects.hash(id, cpf);
     }
+
+    public boolean alteracaoPropria(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Empregado empregado = (Empregado) o;
+
+        if (!cargo.equals(TipoCargo.DONO)) {
+            return id == empregado.id && nome.equals(empregado.getNome()) && Objects.equals(cpf, empregado.cpf) &&
+                    salario.compareTo(empregado.salario) == 0 && cargo.equals(empregado.cargo) && Objects.equals(filialId, empregado.filialId) &&
+                    dataAdimissao.compareTo(empregado.dataAdimissao) == 0 && Objects.equals(codEmpregado, empregado.codEmpregado);
+        } else {
+            return true;
+        }
+    }
 }
