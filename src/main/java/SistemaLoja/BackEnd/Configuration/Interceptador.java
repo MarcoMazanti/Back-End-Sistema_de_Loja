@@ -10,14 +10,23 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class Interceptador  implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        int modelRecord = Integer.parseInt(request.getHeader("ModelRecord"));
-        String path = request.getServletPath();
+        String headerValue = request.getHeader("ModelRecord");
 
-        if (path.contains("/api/pagamento")) {
-            if (modelRecord >= 1 && modelRecord <= 2) return true;
+        if (headerValue != null && !headerValue.isEmpty()) {
+            int modelRecord = Integer.parseInt(headerValue);
+
+            String path = request.getServletPath();
+
+            if (path.contains("/api/pagamento")) {
+                if (modelRecord >= 1 && modelRecord <= 2) return true;
+            } else {
+                if (modelRecord >= 1 && modelRecord <= 3) return true;
+            }
         } else {
-            if (modelRecord >= 1 && modelRecord <= 3) return true;
+            request.setAttribute("ModelRecord", 1);
+            return true;
         }
+
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         return false;

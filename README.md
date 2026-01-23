@@ -10,9 +10,8 @@
 ### Objetivos Secundários
 - [X] Utilizar a usar Salt-Hash
 - [X] Aprofundamento do versionamento Git
-- [ ] Construir modelo de Filtragem
 - [X] Construir modelo de Factories para o Response
-- [ ] Inserir limites de requisições por segundo com base no IP
+- [X] Inserir limites de requisições por segundo com base no IP
 
 - - -
 
