@@ -52,7 +52,7 @@ public class EstoqueService extends ServiceAbstract<Estoque> implements RequestP
     public Estoque salvar(Estoque item) {
         Optional<Estoque> optionalEstoque = estoqueRepository.findByNomeAndIdFilialAndIdFornecedor(item.getNome(), item.getIdFilial(), item.getIdFornecedor());
 
-        if (optionalEstoque.isPresent()) throw new RegistroJaExistenteException("Já existe este item nesta filial com o mesmo fornecedor!");
+        if (optionalEstoque.isPresent()) throw new RegistroJaExistenteException("Já existe este item nesta filial com o mesmo nome e fornecedor!");
 
         return estoqueRepository.save(item);
     }
