@@ -2,6 +2,7 @@ package SistemaLoja.BackEnd.Entity.Plain.Cliente;
 
 import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -14,36 +15,47 @@ import java.util.Objects;
 @AllArgsConstructor
 @JsonPropertyOrder({"id", "nome", "cpfOrCnpj", "email", "telefone", "fullAdress", "codCountry", "codEstado", "codCidade", "codCliente"})
 @Entity(name = "cliente")
+@Schema(description = "Responsável por armazenar todos os dados de um cliente.")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
+    @Schema(description = "Número de identificação", example = "1")
     private int id;
     @NotBlank
     @Size(max = 255)
+    @Schema(description = "Nome da pessoa", example = "Nome Completo", maxLength = 255)
     private String nome;
     @NotBlank
     @Size(min = 11, max = 14)
     @Setter(AccessLevel.NONE)
     @Column(name = "cpf_or_cnpj")
+    @Schema(description = "CPF/CNPJ da pessoa", example = "01234567890", minLength = 11, maxLength = 14)
     private String cpfOrCnpj;
     @NotBlank
     @Size(max = 255)
+    @Schema(description = "Email de identificação", example = "marco.aureio@example.com", maxLength = 255)
     private String email;
     @Size(min = 9, max = 15)
+    @Schema(example = "55018990123456", minLength = 9, maxLength = 15)
     private String telefone;
     @Column(name = "full_adress", columnDefinition = "TEXT", nullable = false)
+    @Schema(description = "Endereço completo", example = "País, Estado, Cidade, Rua, Complemento, Número")
     private String fullAdress;
     @NotBlank
     @Size(max = 3)
+    @Schema(example = "BR", maxLength = 3)
     private String codCountry;
     @NotBlank
     @Size(max = 3)
+    @Schema(example = "SP", maxLength = 3)
     private String codEstado;
     @NotBlank
     @Size(max = 3)
+    @Schema(example = "SP", maxLength = 3)
     private String codCidade;
     @Column(name = "cod_cliente", length = 25, insertable = false, updatable = false)
+    @Schema(description = "Série única do cliente gerado automaticamente", example = "BR-SP-SP-CLT-1")
     private String codCliente;
 
     // Responsável pela volta do ClienteRecordTwo quando descriptografar
