@@ -4,7 +4,7 @@
 - [X] Aprimorar o conhecimento em APIs REST
 - [ ] Compreender criptografía híbrida
 - [X] Aprofundamento em prototipação de Serviços
-- [ ] Aprimoramento da documentação
+- [X] Aprimoramento da documentação
 - [X] Aprender JUnit e Mockito
 
 ### Objetivos Secundários

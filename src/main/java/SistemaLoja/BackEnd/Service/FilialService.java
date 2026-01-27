@@ -72,6 +72,6 @@ public class FilialService extends ServiceAbstract<Filial> implements RequestReq
         Optional<Empregado> optionalEmpregado = empregadoRepository.findById(idRequerinte);
 
         if (optionalEmpregado.isEmpty()) throw new RegistroInexistenteException("Impossível acessar conta de empregado com base no idRequerinte!");
-        if (!optionalEmpregado.get().getCargo().equals(TipoCargo.DONO)) throw new RequerinteNaoAutorizadoException("Conta Requerinte sem permissão para criar nova filial!");
+        if (!optionalEmpregado.get().getCargo().equals(TipoCargo.DONO)) throw new RequerenteNaoAutorizadoException("Conta Requerinte sem permissão para criar nova filial!");
     }
 }
