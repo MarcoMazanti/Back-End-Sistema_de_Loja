@@ -19,4 +19,7 @@ public class BackEndApplication {
 		}
 		SpringApplication.run(BackEndApplication.class, args);
 	}
+	/*
+	 * Swagger apenas disponível em ambiente de homologação e de desenvolvimento!!!
+	 */
 }

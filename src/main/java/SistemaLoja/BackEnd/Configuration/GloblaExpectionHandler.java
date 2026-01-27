@@ -15,8 +15,8 @@ public class GloblaExpectionHandler {
     }
 
     // Retorna 401
-    @ExceptionHandler(RequerinteNaoAutorizadoException.class)
-    public ResponseEntity<String> handleNaoAutorizado(RequerinteNaoAutorizadoException ex) {
+    @ExceptionHandler(RequerenteNaoAutorizadoException.class)
+    public ResponseEntity<String> handleRequerenteNaoAutorizado(RequerenteNaoAutorizadoException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 

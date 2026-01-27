@@ -1,6 +1,7 @@
 package SistemaLoja.BackEnd.Entity.Plain.Pagamento;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
@@ -8,29 +9,36 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({"id", "idCliente", "idFilial", "precoTotal", "precoPago", "dataCompra", "codPagamento"})
 @Entity(name = "pagamento")
+@Schema(description = "Responsável por armazenar todos os dados de um pagamento.")
 public class Pagamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
+    @Schema(description = "Número de identificação", example = "1")
     private Integer id;
     @NotNull
+    @Schema(description = "Campo relacional apontando para um registro de Cliente", example = "2")
     private int idCliente;
     @NotNull
+    @Schema(description = "Campo relacional apontando para um registro de Filial", example = "3")
     private int idFilial;
     @NotNull
     @Digits(integer = 8, fraction = 2)
+    @Schema(description = "Preço total da compra realizada pelo cliente")
     private BigDecimal precoTotal;
     @Digits(integer = 8, fraction = 2)
+    @Schema(description = "Preço já pago pelo cliente")
     private BigDecimal precoPago;
+    @Schema(description = "Campo gerado automaticamente", defaultValue = "CURRENT_DATE")
     private Date dataCompra;
     @Column(name = "cod_pagamento", length = 24, insertable = false, updatable = false)
+    @Schema(description = "Série única do pagamento gerado automaticamente", example = "FIL-3-VND-1")
     private String codPagamento;
 
     @PrePersist

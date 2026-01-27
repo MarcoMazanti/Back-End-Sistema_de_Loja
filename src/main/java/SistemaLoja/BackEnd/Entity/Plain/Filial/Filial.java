@@ -2,6 +2,7 @@ package SistemaLoja.BackEnd.Entity.Plain.Filial;
 
 import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -14,31 +15,41 @@ import java.util.Objects;
 @AllArgsConstructor
 @JsonPropertyOrder({"id", "cnpj", "telefone", "quantEmpregados", "fullAdress", "codCountry", "codEstado", "codCidade", "codFilial"})
 @Entity(name = "filial")
+@Schema(description = "Responsável por armazenar todos os dados de uma filial.")
 public class Filial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
+    @Schema(description = "Número de identificação", example = "1")
     private int id;
     @NotBlank
     @Size(min = 14, max = 14)
     @Setter(AccessLevel.NONE)
+    @Schema(description = "CNPJ da Filial", example = "01234567890123", minLength = 14, maxLength = 14)
     private String cnpj;
     @NotBlank
     @Size(min = 9, max = 15)
+    @Schema(example = "55018990123456", minLength = 9, maxLength = 15)
     private String telefone;
+    @Schema(defaultValue = "0", example = "0")
     private int quantEmpregados;
     @Column(name = "full_adress", columnDefinition = "TEXT", nullable = false)
+    @Schema(description = "Endereço completo", example = "País, Estado, Cidade, Rua, Complemento, Número")
     private String fullAdress;
     @NotBlank
     @Size(max = 3)
+    @Schema(example = "BR", maxLength = 3)
     private String codCountry;
     @NotBlank
     @Size(max = 3)
+    @Schema(example = "SP", maxLength = 3)
     private String codEstado;
     @NotBlank
     @Size(max = 3)
+    @Schema(example = "SP", maxLength = 3)
     private String codCidade;
     @Column(name = "cod_filial", length = 21, insertable = false, updatable = false)
+    @Schema(description = "Série única da filial gerada automaticamente", example = "BR-SP-SP-FIL-1")
     private String codFilial;
 
     // Responsável pela volta da FilialRecordTwo quando descriptografar

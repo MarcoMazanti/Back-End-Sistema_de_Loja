@@ -2,6 +2,7 @@ package SistemaLoja.BackEnd.Entity.Plain.Empregado;
 
 import SistemaLoja.BackEnd.Exception.TamanhoInvalidoCampoException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,34 +18,47 @@ import java.util.Objects;
 @AllArgsConstructor
 @JsonPropertyOrder({"id", "nome", "cpf", "senha", "email", "telefone", "salario", "cargo", "filialId", "aniversario", "dataAdimissao", "codEmpregado"})
 @Entity(name = "empregado")
+@Schema(description = "Responsável por armazenar todos os dados de um empregado.")
 public class Empregado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
+    @Schema(description = "Número de identificação", example = "1")
     private int id;
     @NotBlank
     @Size(max = 255)
+    @Schema(description = "Nome da pessoa", example = "Nome Completo", maxLength = 255)
     private String nome;
     @NotBlank
     @Size(min = 11, max = 11)
     @Setter(AccessLevel.NONE)
+    @Schema(description = "CPF da pessoa", example = "01234567890", minLength = 11, maxLength = 11)
     private String cpf;
     @NotBlank
     @Size(max = 200)
+    @Schema(description = "Senha salt-hash da pessoa", maxLength = 200)
     private String senha;
     @NotBlank
     @Size(max = 255)
+    @Schema(description = "Email de identificação", example = "marco.aureio@example.com", maxLength = 255)
     private String email;
     @Size(min = 9, max = 15)
+    @Schema(example = "55018990123456", minLength = 9, maxLength = 15)
     private String telefone;
     @NotNull
+    @Schema(example = "1500.00", defaultValue = "0.00")
     private BigDecimal salario;
+    @Schema(description = "Enum de cargos armazenado como smallint", example = "1", defaultValue = "0")
     private TipoCargo cargo;
     @NotNull
+    @Schema(description = "Campo relacional apontando para um registro de Filial", example = "1")
     private Integer filialId;
+    @Schema(description = "Campo opcional preenchido pelo dono ca conta")
     private Date aniversario;
+    @Schema(description = "Campo gerado automaticamente", defaultValue = "CURRENT_DATE")
     private Date dataAdimissao;
     @Column(name = "cod_empregado", length = 24, insertable = false, updatable = false)
+    @Schema(description = "Série única do empregado gerado automaticamente", example = "FIL-1-EMP-1")
     private String codEmpregado;
 
 
