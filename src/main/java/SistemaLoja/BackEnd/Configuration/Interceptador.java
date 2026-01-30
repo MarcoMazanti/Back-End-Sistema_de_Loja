@@ -11,6 +11,12 @@ public class Interceptador  implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String headerValue = request.getHeader("ModelRecord");
+        String chaveSimetrica = request.getHeader("secretKey");
+
+        if (!(chaveSimetrica != null && !chaveSimetrica.isEmpty())) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return false;
+        }
 
         if (headerValue != null && !headerValue.isEmpty()) {
             int modelRecord = Integer.parseInt(headerValue);
