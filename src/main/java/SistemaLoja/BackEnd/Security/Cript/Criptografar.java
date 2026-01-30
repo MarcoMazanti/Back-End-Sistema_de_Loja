@@ -8,6 +8,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,14 +31,6 @@ public class Criptografar {
         try {
             publicKey = getPublicKeyFromBase64(chavePublicaString);
             privateKey = getPrivateKeyFromBase64(chavePrivadaString);
-
-            KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-            keyGen.init(256);
-
-            SecretKey secretKey = keyGen.generateKey();
-
-            String base64Key = Base64.getEncoder().encodeToString(secretKey.getEncoded());
-            System.out.println("Chave Secreta Criptografada: " + criptChaveSimetrica(base64Key));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao iniciar a chave pública!");
@@ -48,18 +41,21 @@ public class Criptografar {
      * Eu recebo a chave simétrica criptografada (CSC), descriptografo utilizando a chave privada.
      * com isso eu uso a CSC para criptografar o texto.
      */
-    public String criptografar(String chaveSimetrica, String texto) {
+    public String criptografar(String chaveSimetricaBase64, String texto) {
         try {
             Cipher cipherAssimetrico = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipherAssimetrico.init(Cipher.DECRYPT_MODE, privateKey);
 
-            String secretKeyString = new String(cipherAssimetrico.doFinal(Base64.getDecoder().decode(chaveSimetrica)));
-            SecretKey secretKey = new SecretKeySpec(Base64.getDecoder().decode(secretKeyString), "AES");
+            byte[] chaveAesBytes = cipherAssimetrico.doFinal(Base64.getDecoder().decode(chaveSimetricaBase64));
+            SecretKey secretKey = new SecretKeySpec(chaveAesBytes, "AES");
+            System.out.println(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
 
             Cipher cipherSimetrico = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipherSimetrico.init(Cipher.ENCRYPT_MODE, secretKey);
 
-            return new String(Base64.getEncoder().encode(cipherSimetrico.doFinal(texto.getBytes())));
+            byte[] textoCriptografado = cipherSimetrico.doFinal(texto.getBytes(StandardCharsets.UTF_8));
+
+            return Base64.getEncoder().encodeToString(textoCriptografado);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao criptografar o texto!");

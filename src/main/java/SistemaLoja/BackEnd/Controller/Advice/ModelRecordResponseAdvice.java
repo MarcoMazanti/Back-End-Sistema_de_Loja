@@ -71,6 +71,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
             }
         }
 
+        System.out.println(body);
         if (body instanceof List<?> lista) {
             if (!lista.isEmpty()) {
                 List<Object> listaEntrega = new ArrayList<>();
