@@ -5,6 +5,7 @@ import SistemaLoja.BackEnd.Entity.Encripted.Cliente.ClienteRecordThree;
 import SistemaLoja.BackEnd.Entity.Encripted.Cliente.ClienteRecordTwo;
 import SistemaLoja.BackEnd.Entity.Plain.Cliente.Cliente;
 import SistemaLoja.BackEnd.Security.Cript.Criptografar;
+import SistemaLoja.BackEnd.Security.Decript.Descriptografar;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class ClienteFactory {
     private String chaveSimetrica;
     @Autowired
     private Criptografar criptografar;
+    @Autowired
+    private Descriptografar descriptografar;
 
     // Plain → Encripted
 
@@ -57,4 +60,18 @@ public class ClienteFactory {
     }
 
     // Encripted → Plain
+    public Cliente encriptedToPlainCliente(ClienteRecordOne clienteRecordOne) {
+        int id = (clienteRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.id())) : null;
+        String nome = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.nome());
+        String cpfOrCnpj = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.cpfOrCnpj());
+        String email = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.email());
+        String telefone = (clienteRecordOne.telefone() != null) ? descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.telefone()) : null;
+        String fullAdress = (clienteRecordOne.fullAdress() != null) ? descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.fullAdress()) : null;
+        String codCountry = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.codCountry());
+        String codEstado = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.codEstado());
+        String codCidade = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.codCidade());
+        String codCliente = (clienteRecordOne.codCliente() != null) ? descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.codCliente()) : null;
+
+        return new Cliente(id, nome, cpfOrCnpj, email, telefone, fullAdress, codCountry, codEstado, codCidade, codCliente);
+    }
 }

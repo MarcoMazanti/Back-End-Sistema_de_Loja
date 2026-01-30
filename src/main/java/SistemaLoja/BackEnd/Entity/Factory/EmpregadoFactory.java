@@ -4,10 +4,16 @@ import SistemaLoja.BackEnd.Entity.Encripted.Empregado.EmpregadoRecordOne;
 import SistemaLoja.BackEnd.Entity.Encripted.Empregado.EmpregadoRecordThree;
 import SistemaLoja.BackEnd.Entity.Encripted.Empregado.EmpregadoRecordTwo;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
+import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
+import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
 import SistemaLoja.BackEnd.Security.Cript.Criptografar;
+import SistemaLoja.BackEnd.Security.Decript.Descriptografar;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Service
 public class EmpregadoFactory {
@@ -15,6 +21,8 @@ public class EmpregadoFactory {
     private String chaveSimetrica;
     @Autowired
     private Criptografar criptografar;
+    @Autowired
+    private Descriptografar descriptografar;
 
     // Plain → Encripted
 
@@ -61,4 +69,41 @@ public class EmpregadoFactory {
     }
 
     // Encripted → Plain
+
+    // Empregado
+    public Empregado encriptedToPlainEmpregado(EmpregadoRecordOne empregadoRecordOne) {
+        int id = (empregadoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.id())) : null;
+        String nome = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.nome());
+        String cpf = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.cpf());
+        String senha = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.senha());
+        String email = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.email());
+        String telefone = (empregadoRecordOne.telefone() != null) ? descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.telefone()) : null;
+        BigDecimal salario = new BigDecimal(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.salario()));
+        TipoCargo cargo = (empregadoRecordOne.cargo() != null) ? TipoCargo.valueOf(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.cargo())) : null;
+        int filialId = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.filialId()));
+
+        Date aniversario = null;
+        if (empregadoRecordOne.aniversario() != null) {
+            String aniversarioString = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.aniversario());
+            aniversario = new Date(Long.parseLong(aniversarioString));
+        }
+
+        Date dataAdimissao = null;
+        if (empregadoRecordOne.dataAdimissao() != null) {
+            String dataAdimissaoString = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.dataAdimissao());
+            dataAdimissao = new Date(Long.parseLong(dataAdimissaoString));
+        }
+
+        String codEmpregado = (empregadoRecordOne.codEmpregado() != null) ? descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.codEmpregado()) : null;
+
+        return new Empregado(id, nome, cpf, senha, email, telefone, salario, cargo, filialId, aniversario, dataAdimissao, codEmpregado);
+    }
+
+    // Login
+    public Login encriptedToPlainLogin(Login login) {
+        String cpf = descriptografar.descriptografar(chaveSimetrica, login.cpf());
+        String senha = descriptografar.descriptografar(chaveSimetrica, login.senha());
+
+        return new Login(cpf, senha);
+    }
 }

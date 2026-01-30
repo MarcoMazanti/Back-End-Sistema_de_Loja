@@ -5,6 +5,7 @@ import SistemaLoja.BackEnd.Entity.Encripted.Fornecedor.FornecedorRecordThree;
 import SistemaLoja.BackEnd.Entity.Encripted.Fornecedor.FornecedorRecordTwo;
 import SistemaLoja.BackEnd.Entity.Plain.Fornecedor.Fornecedor;
 import SistemaLoja.BackEnd.Security.Cript.Criptografar;
+import SistemaLoja.BackEnd.Security.Decript.Descriptografar;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class FornecedorFactory {
     private String chaveSimetrica;
     @Autowired
     private Criptografar criptografar;
+    @Autowired
+    private Descriptografar descriptografar;
 
     // Plain → Encripted
 
@@ -57,4 +60,18 @@ public class FornecedorFactory {
     }
 
     // Encripted → Plain
+    public Fornecedor encriptedToPlainFornecedor(FornecedorRecordOne fornecedorRecordOne) {
+        int id = (fornecedorRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.id())) : null;
+        String nome = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.nome());
+        String cpfOrCnpj = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.cpfOrCnpj());
+        String email = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.email());
+        String telefone = (fornecedorRecordOne.telefone() != null) ? descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.telefone()) : null;
+        String fullAdress = (fornecedorRecordOne.fullAdress() != null) ? descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.fullAdress()) : null;
+        String codCountry = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.codCountry());
+        String codEstado = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.codEstado());
+        String codCidade = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.codCidade());
+        String codFornecedor = (fornecedorRecordOne.codFornecedor() != null) ? descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.codFornecedor()) : null;
+
+        return new Fornecedor(id, nome, cpfOrCnpj, email, telefone, fullAdress, codCountry, codEstado, codCidade, codFornecedor);
+    }
 }

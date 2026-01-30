@@ -5,9 +5,12 @@ import SistemaLoja.BackEnd.Entity.Encripted.Estoque.EstoqueRecordThree;
 import SistemaLoja.BackEnd.Entity.Encripted.Estoque.EstoqueRecordTwo;
 import SistemaLoja.BackEnd.Entity.Plain.Estoque.Estoque;
 import SistemaLoja.BackEnd.Security.Cript.Criptografar;
+import SistemaLoja.BackEnd.Security.Decript.Descriptografar;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class EstoqueFactory {
@@ -15,6 +18,8 @@ public class EstoqueFactory {
     private String chaveSimetrica;
     @Autowired
     private Criptografar criptografar;
+    @Autowired
+    private Descriptografar descriptografar;
 
     // Plain → Encripted
     // EstoqueRecordOne
@@ -54,4 +59,16 @@ public class EstoqueFactory {
     }
 
     // Encripted → Plain
+    public Estoque encriptedToPlainEstoque(EstoqueRecordOne estoqueRecordOne) {
+        int id = (estoqueRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.id())) : null;
+        String nome = descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.nome());
+        int idFilial = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.idFilial()));
+        int idFornecedor = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.idFornecedor()));
+        BigDecimal preco = new BigDecimal(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.preco()));
+        int quantidade = (estoqueRecordOne.quantidade() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.quantidade())) : null;
+        String descricao = (estoqueRecordOne.descricao() != null) ? descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.descricao()) : null;
+        String codItem = (estoqueRecordOne.codItem() != null) ? descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.codItem()) : null;
+
+        return new Estoque(id, nome, idFilial, idFornecedor, preco, quantidade, descricao, codItem);
+    }
 }
