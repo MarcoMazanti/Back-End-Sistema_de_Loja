@@ -9,11 +9,11 @@ import SistemaLoja.BackEnd.Entity.Plain.Fornecedor.Fornecedor;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.ItemPagamento;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.Pagamento;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.PagamentoPayload;
+import SistemaLoja.BackEnd.Security.GerarSecretKey;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -22,11 +22,11 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.crypto.SecretKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
-@Order(1)
 @ControllerAdvice
 public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     @Autowired
@@ -41,8 +41,11 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     private EstoqueFactory estoqueFactory;
     @Autowired
     private PagamentoGeralFactory pagamentoGeralFactory;
+    @Autowired
+    private GerarSecretKey gerarSecretKey;
 
     private int modelRecord = 1;
+    private SecretKey chaveSimetrica;
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -58,6 +61,9 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
                                             ServerHttpResponse response) {
         if (body == null) return null;
         String modelRecordStr = request.getHeaders().getFirst("ModelRecord");
+        String chaveSimetricaSuja = Optional.ofNullable(request.getHeaders().getFirst("secretKey")).orElse("");
+
+        chaveSimetrica = gerarSecretKey.descriptSecretKey(chaveSimetricaSuja);
 
         if (modelRecordStr != null && !modelRecordStr.isEmpty()) {
             modelRecord = Integer.parseInt(modelRecordStr);
@@ -126,6 +132,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     private Object filialPlainToRecord(Filial filial) {
+        filialFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> filialFactory.plainToFilialRecordOne(filial);
             case 2 -> filialFactory.plainToFilialRecordTwo(filial);
@@ -135,6 +142,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     private Object empregadoPlainToRecord(Empregado empregado) {
+        empregadoFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> empregadoFactory.plainToEmpregadoRecordOne(empregado);
             case 2 -> empregadoFactory.plainToEmpregadoRecordTwo(empregado);
@@ -144,6 +152,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     private Object clientePlainToFactory(Cliente cliente) {
+        clienteFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> clienteFactory.plainToClienteRecordOne(cliente);
             case 2 -> clienteFactory.plainToClienteRecordTwo(cliente);
@@ -153,6 +162,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     public Object fornecedorPlainToRecord(Fornecedor fornecedor) {
+        fornecedorFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> fornecedorFactory.plainToFornecedorRecordOne(fornecedor);
             case 2 -> fornecedorFactory.plainToFornecedorRecordTwo(fornecedor);
@@ -162,6 +172,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     public Object estoquePlainToRecord(Estoque estoque) {
+        estoqueFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> estoqueFactory.plainToEstoqueRecordOne(estoque);
             case 2 -> estoqueFactory.plainToEstoqueRecordTwo(estoque);
@@ -171,6 +182,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     public Object pagamentoPlainToRecord(Pagamento pagamento) {
+        pagamentoGeralFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> pagamentoGeralFactory.plainToPagamentoRecordOne(pagamento);
             case 2 -> pagamentoGeralFactory.plainToPagamentoRecordTwo(pagamento);
@@ -179,6 +191,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     public Object itemPagamentoPlainToRecord(ItemPagamento itemPagamento) {
+        pagamentoGeralFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> pagamentoGeralFactory.plainToItemPagamentoRecordOne(itemPagamento);
             case 2 -> pagamentoGeralFactory.plainToItemPagamentoRecordTwo(itemPagamento);
@@ -187,6 +200,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     public Object pagamentoPayloadPlainToRecord(PagamentoPayload pagamentoPayload) {
+        pagamentoGeralFactory.setChaveSimetrica(chaveSimetrica);
         return switch (modelRecord) {
             case 1 -> pagamentoGeralFactory.plainToPagamentoPayloadRecordOne(pagamentoPayload);
             case 2 -> pagamentoGeralFactory.plainToPagamentoPayloadRecordTwo(pagamentoPayload);

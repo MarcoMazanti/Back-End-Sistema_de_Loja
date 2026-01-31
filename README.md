@@ -2,7 +2,7 @@
 - - -
 ### Objetivos Primários
 - [X] Aprimorar o conhecimento em APIs REST
-- [ ] Compreender criptografía híbrida
+- [X] Compreender criptografía híbrida
 - [X] Aprofundamento em prototipação de Serviços
 - [X] Aprimoramento da documentação
 - [X] Aprender JUnit e Mockito
@@ -55,5 +55,5 @@ Será desenvolvido em Ordem de Desenvolvimento e cada ítem sendo feito em Ordem
 ## Data de Início
 #### 2026-01-05
 
-## Data de Término
-#### Em Desenvolvimento
+## Data de Término Geral
+#### 2026-01-30
