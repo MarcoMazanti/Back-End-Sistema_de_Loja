@@ -62,7 +62,7 @@ public class ModelRecordRequestAdvice extends RequestBodyAdviceAdapter {
         String bodyOriginal = new String(inputMessage.getBody().readAllBytes(), StandardCharsets.UTF_8);
         String chaveSimetricaSuja = Optional.ofNullable(inputMessage.getHeaders().getFirst("secretKey")).orElse("");
 
-        chaveSimetrica = gerarSecretKey.descriptSecretKey(chaveSimetricaSuja);
+        chaveSimetrica = (!chaveSimetricaSuja.isEmpty()) ? gerarSecretKey.descriptSecretKey(chaveSimetricaSuja) : null;
 
         Object objDescript = descriptografarBody(bodyOriginal);
         ObjectMapper mapper = new ObjectMapper();

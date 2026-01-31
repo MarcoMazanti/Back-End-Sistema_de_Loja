@@ -63,7 +63,7 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
         String modelRecordStr = request.getHeaders().getFirst("ModelRecord");
         String chaveSimetricaSuja = Optional.ofNullable(request.getHeaders().getFirst("secretKey")).orElse("");
 
-        chaveSimetrica = gerarSecretKey.descriptSecretKey(chaveSimetricaSuja);
+        chaveSimetrica = (!chaveSimetricaSuja.isEmpty()) ? gerarSecretKey.descriptSecretKey(chaveSimetricaSuja) : null;
 
         if (modelRecordStr != null && !modelRecordStr.isEmpty()) {
             modelRecord = Integer.parseInt(modelRecordStr);
