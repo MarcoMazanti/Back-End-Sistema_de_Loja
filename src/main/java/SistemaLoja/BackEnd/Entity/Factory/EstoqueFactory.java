@@ -10,12 +10,13 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.math.BigDecimal;
 
 @Service
 public class EstoqueFactory {
     @Setter
-    private String chaveSimetrica;
+    private SecretKey chaveSimetrica;
     @Autowired
     private Criptografar criptografar;
     @Autowired

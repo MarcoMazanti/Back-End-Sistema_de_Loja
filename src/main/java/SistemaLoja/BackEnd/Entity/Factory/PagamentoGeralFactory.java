@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.List;
 @Service
 public class PagamentoGeralFactory {
     @Setter
-    private String chaveSimetrica;
+    private SecretKey chaveSimetrica;
     @Autowired
     private Criptografar criptografar;
     @Autowired

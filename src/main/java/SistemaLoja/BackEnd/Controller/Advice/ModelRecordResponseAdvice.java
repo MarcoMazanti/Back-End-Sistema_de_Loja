@@ -9,6 +9,7 @@ import SistemaLoja.BackEnd.Entity.Plain.Fornecedor.Fornecedor;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.ItemPagamento;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.Pagamento;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.PagamentoPayload;
+import SistemaLoja.BackEnd.Security.GerarSecretKey;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.crypto.SecretKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +41,11 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
     private EstoqueFactory estoqueFactory;
     @Autowired
     private PagamentoGeralFactory pagamentoGeralFactory;
+    @Autowired
+    private GerarSecretKey gerarSecretKey;
 
     private int modelRecord = 1;
-    private String chaveSimetrica;
+    private SecretKey chaveSimetrica;
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -57,7 +61,9 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
                                             ServerHttpResponse response) {
         if (body == null) return null;
         String modelRecordStr = request.getHeaders().getFirst("ModelRecord");
-        chaveSimetrica = Optional.ofNullable(request.getHeaders().getFirst("secretKey")).orElse("");
+        String chaveSimetricaSuja = Optional.ofNullable(request.getHeaders().getFirst("secretKey")).orElse("");
+
+        chaveSimetrica = gerarSecretKey.descriptSecretKey(chaveSimetricaSuja);
 
         if (modelRecordStr != null && !modelRecordStr.isEmpty()) {
             modelRecord = Integer.parseInt(modelRecordStr);
@@ -71,7 +77,6 @@ public class ModelRecordResponseAdvice implements ResponseBodyAdvice<Object> {
             }
         }
 
-        System.out.println(body);
         if (body instanceof List<?> lista) {
             if (!lista.isEmpty()) {
                 List<Object> listaEntrega = new ArrayList<>();
