@@ -15,6 +15,8 @@ public class Criptografar {
      */
     public String criptografar(SecretKey chaveSimetrica, String texto) {
         try {
+            if (texto == null) texto = "null";
+
             Cipher cipherSimetrico = Cipher.getInstance("AES");
             cipherSimetrico.init(Cipher.ENCRYPT_MODE, chaveSimetrica);
 

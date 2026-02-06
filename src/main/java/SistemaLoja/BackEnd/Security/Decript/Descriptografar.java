@@ -21,7 +21,9 @@ public class Descriptografar {
             byte[] bytesCriptografados = Base64.getDecoder().decode(textoCriptografado);
             byte[] decryptedBytes = cipherSimetrico.doFinal(bytesCriptografados);
 
-            return new String(decryptedBytes, StandardCharsets.UTF_8);
+            String textoDescriptografado = new String(decryptedBytes, StandardCharsets.UTF_8);
+            if (textoDescriptografado.equals("null")) return null;
+            return textoDescriptografado;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao descriptografar o texto!");
