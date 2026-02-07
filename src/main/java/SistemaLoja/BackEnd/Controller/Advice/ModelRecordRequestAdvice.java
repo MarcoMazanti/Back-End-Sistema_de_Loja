@@ -10,6 +10,7 @@ import SistemaLoja.BackEnd.Entity.Encripted.Pagamento.PagamentoPayloadRecord;
 import SistemaLoja.BackEnd.Entity.Encripted.Pagamento.PagamentoRecordOne;
 import SistemaLoja.BackEnd.Entity.Factory.*;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
+import SistemaLoja.BackEnd.Entity.Plain.Empregado.TrocarSenha;
 import SistemaLoja.BackEnd.Security.GerarSecretKey;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -101,6 +102,9 @@ public class ModelRecordRequestAdvice extends RequestBodyAdviceAdapter {
             } else if (jsonNode.has("codEmpregado")) {
                 empregadoFactory.setChaveSimetrica(chaveSimetrica);
                 return empregadoFactory.encriptedToPlainEmpregado(mapper.treeToValue(jsonNode, EmpregadoRecordOne.class));
+            } else if (jsonNode.has("cpf") && jsonNode.has("email") && jsonNode.has("senha")) {
+                empregadoFactory.setChaveSimetrica(chaveSimetrica);
+                return empregadoFactory.encriptedToPlainTrocarSenha(mapper.treeToValue(jsonNode, TrocarSenha.class));
             } else if (jsonNode.has("cpf") && jsonNode.has("senha")) {
                 empregadoFactory.setChaveSimetrica(chaveSimetrica);
                 return empregadoFactory.encriptedToPlainLogin(mapper.treeToValue(jsonNode, Login.class));

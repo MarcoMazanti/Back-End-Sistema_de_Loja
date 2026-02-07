@@ -2,6 +2,7 @@ package SistemaLoja.BackEnd.Controller;
 
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
+import SistemaLoja.BackEnd.Entity.Plain.Empregado.TrocarSenha;
 import SistemaLoja.BackEnd.Service.EmpregadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -56,6 +57,18 @@ public class EmpregadoController {
     @PostMapping("/login")
     public ResponseEntity<Empregado> efetuarLogin(@RequestBody Login login) {
         return ResponseEntity.status(HttpStatus.OK).body(empregadoService.efetuarLogin(login));
+    }
+
+    @Operation(summary = "Trocar Senha", description = "Trocar a senha do usuário com base no CPF e E-mail.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Não foi encontrado o empregado com base no CPF fornecido."),
+            @ApiResponse(responseCode = "401", description = "Nova senha não bate as requisições básicas necessárias."),
+            @ApiResponse(responseCode = "406", description = "CPF e Email não batem com a conta.")
+    })
+    @PostMapping("/trocar_senha")
+    public ResponseEntity<Void> trocarSenha(@RequestBody TrocarSenha trocarSenha) {
+        empregadoService.trocarSenha(trocarSenha);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "Salvar Empregado", description = "Registra um novo Empregado no sistema.")

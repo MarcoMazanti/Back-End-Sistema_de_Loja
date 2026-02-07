@@ -30,7 +30,7 @@ public class FilialController {
         return ResponseEntity.status(HttpStatus.OK).body(filialService.listar());
     }
 
-    @Operation(summary = "Obter Filial por ID", description = "Otem a filial com base no ID fornecido.")
+    @Operation(summary = "Obter Filial por ID", description = "Obtem a filial com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Não foi encontrado a Filial com base no ID fornecido.")
     })
