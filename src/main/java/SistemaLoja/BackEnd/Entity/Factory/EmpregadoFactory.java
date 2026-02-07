@@ -6,6 +6,7 @@ import SistemaLoja.BackEnd.Entity.Encripted.Empregado.EmpregadoRecordTwo;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TipoCargo;
+import SistemaLoja.BackEnd.Entity.Plain.Empregado.TrocarSenha;
 import SistemaLoja.BackEnd.Security.Cript.Criptografar;
 import SistemaLoja.BackEnd.Security.Decript.Descriptografar;
 import lombok.Setter;
@@ -106,5 +107,14 @@ public class EmpregadoFactory {
         String senha = descriptografar.descriptografar(chaveSimetrica, login.senha());
 
         return new Login(cpf, senha);
+    }
+
+    // TrocarSenha
+    public TrocarSenha encriptedToPlainTrocarSenha(TrocarSenha trocarSenha) {
+        String cpf = descriptografar.descriptografar(chaveSimetrica, trocarSenha.cpf());
+        String email = descriptografar.descriptografar(chaveSimetrica, trocarSenha.email());
+        String senha = descriptografar.descriptografar(chaveSimetrica, trocarSenha.senha());
+
+        return new TrocarSenha(cpf, email, senha);
     }
 }

@@ -2,6 +2,7 @@ package SistemaLoja.BackEnd.Service;
 
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Empregado;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
+import SistemaLoja.BackEnd.Entity.Plain.Empregado.TrocarSenha;
 import SistemaLoja.BackEnd.Entity.Plain.Filial.Filial;
 import SistemaLoja.BackEnd.Exception.*;
 import SistemaLoja.BackEnd.Repository.FilialRepository;
@@ -53,6 +54,20 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
         throw new LoginNaoAutorizadoException("Não foi autorizado o login!");
     }
 
+    public void trocarSenha(TrocarSenha trocarSenha) {
+        Empregado empregado = empregadoRepository.findByCpf(trocarSenha.cpf())
+                .orElseThrow(() -> new RegistroInexistenteException("Empregado não encontrado!"));
+
+        boolean dadosConferem = Objects.equals(empregado.getCpf(), trocarSenha.cpf()) &&
+                Objects.equals(empregado.getEmail(), trocarSenha.email());
+
+        if (!dadosConferem) throw new AtualizacaoNaoPermitidaException("Credenciais (CPF ou Email) inválidas para esta conta!");
+
+        empregado.setSenha(encriptarSenha(trocarSenha.senha()));
+
+        empregadoRepository.save(empregado);
+    }
+
     @Override
     public Empregado salvar(Integer idRequerinte, Empregado empregado) {
         verificarPermissaoRequerinte(idRequerinte);
@@ -88,9 +103,6 @@ public class EmpregadoService extends ServiceAbstract<Empregado> implements Requ
         if (optionalEmpregado.isEmpty()) throw new RegistroInexistenteException("Não possui uma conta de empregado cadastrado!");
 
         if (!optionalEmpregado.get().equals(empregado)) throw new AtualizacaoNaoPermitidaException("Não pode alterar os campos de CPF e ID!");
-
-        // Atualiza se for inserir uma nova senha
-        if (!Objects.equals(empregado.getSenha(), optionalEmpregado.get().getSenha())) empregado.setSenha(encriptarSenha(empregado.getSenha()));
 
         return empregadoRepository.save(empregado);
     }
