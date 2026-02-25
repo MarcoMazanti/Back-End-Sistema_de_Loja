@@ -15,6 +15,7 @@ public class Descriptografar {
      */
     public String descriptografar(SecretKey chaveSimetrica, String textoCriptografado) {
         try {
+            if (textoCriptografado == null) return null;
             Cipher cipherSimetrico = Cipher.getInstance("AES");
             cipherSimetrico.init(Cipher.DECRYPT_MODE, chaveSimetrica);
 
@@ -22,7 +23,6 @@ public class Descriptografar {
             byte[] decryptedBytes = cipherSimetrico.doFinal(bytesCriptografados);
 
             String textoDescriptografado = new String(decryptedBytes, StandardCharsets.UTF_8);
-            if (textoDescriptografado.equals("null")) return null;
             return textoDescriptografado;
         } catch (Exception e) {
             e.printStackTrace();

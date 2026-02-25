@@ -54,7 +54,7 @@ public class PagamentoGeralFactory {
 
 
     // Item Pagamento
-    //ItemPagamentoRecordOne
+    // ItemPagamentoRecordOne
     public ItemPagamentoRecordOne plainToItemPagamentoRecordOne(ItemPagamento itemPagamento) {
         String id = criptografar.criptografar(chaveSimetrica, String.valueOf(itemPagamento.getId()));
         String idPagamento = criptografar.criptografar(chaveSimetrica, String.valueOf(itemPagamento.getIdPagamento()));
@@ -104,9 +104,9 @@ public class PagamentoGeralFactory {
 
     // Pagamento
     public Pagamento encriptedToPlainPagamento(PagamentoRecordOne pagamentoRecordOne) {
-        int id = (pagamentoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.id())) : null;
-        int idCliente = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.idCliente()));
-        int idFilial = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.idFilial()));
+        Integer id = (pagamentoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.id())) : null;
+        Integer idCliente = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.idCliente()));
+        Integer idFilial = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.idFilial()));
         BigDecimal precoTotal = new BigDecimal(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.precoTotal()));
         BigDecimal precoPago = (pagamentoRecordOne.precoPago() != null) ? new BigDecimal(descriptografar.descriptografar(chaveSimetrica, pagamentoRecordOne.precoPago())) : null;
 
@@ -123,11 +123,11 @@ public class PagamentoGeralFactory {
 
     // Item Pagamento
     public ItemPagamento encriptedToPlainItemPagamento(ItemPagamentoRecordOne itemPagamentoRecordOne) {
-        int id = (itemPagamentoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.id())) : null;
-        int idPagamento = (itemPagamentoRecordOne.idPagamento() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.idPagamento())) : null;
-        int idItem = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.idItem()));
+        Integer id = (itemPagamentoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.id())) : null;
+        Integer idPagamento = (itemPagamentoRecordOne.idPagamento() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.idPagamento())) : null;
+        Integer idItem = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.idItem()));
         String nome = descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.nome());
-        int quantidade = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.quantidade()));
+        Integer quantidade = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.quantidade()));
         BigDecimal precoUnit = new BigDecimal(descriptografar.descriptografar(chaveSimetrica, itemPagamentoRecordOne.precoUnit()));
 
         return new ItemPagamento(id, idPagamento, idItem, nome, quantidade, precoUnit);

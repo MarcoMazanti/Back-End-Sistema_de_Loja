@@ -61,12 +61,12 @@ public class EstoqueFactory {
 
     // Encripted → Plain
     public Estoque encriptedToPlainEstoque(EstoqueRecordOne estoqueRecordOne) {
-        int id = (estoqueRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.id())) : null;
+        Integer id = (estoqueRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.id())) : null;
         String nome = descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.nome());
-        int idFilial = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.idFilial()));
-        int idFornecedor = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.idFornecedor()));
+        Integer idFilial = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.idFilial()));
+        Integer idFornecedor = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.idFornecedor()));
         BigDecimal preco = new BigDecimal(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.preco()));
-        int quantidade = (estoqueRecordOne.quantidade() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.quantidade())) : null;
+        Integer quantidade = (estoqueRecordOne.quantidade() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.quantidade())) : null;
         String descricao = (estoqueRecordOne.descricao() != null) ? descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.descricao()) : null;
         String codItem = (estoqueRecordOne.codItem() != null) ? descriptografar.descriptografar(chaveSimetrica, estoqueRecordOne.codItem()) : null;
 

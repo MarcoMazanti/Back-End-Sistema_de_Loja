@@ -63,7 +63,7 @@ public class ClienteFactory {
 
     // Encripted → Plain
     public Cliente encriptedToPlainCliente(ClienteRecordOne clienteRecordOne) {
-        int id = (clienteRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.id())) : null;
+        Integer id = (clienteRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.id())) : null;
         String nome = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.nome());
         String cpfOrCnpj = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.cpfOrCnpj());
         String email = descriptografar.descriptografar(chaveSimetrica, clienteRecordOne.email());
