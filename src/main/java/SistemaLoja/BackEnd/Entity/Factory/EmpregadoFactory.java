@@ -74,7 +74,7 @@ public class EmpregadoFactory {
 
     // Empregado
     public Empregado encriptedToPlainEmpregado(EmpregadoRecordOne empregadoRecordOne) {
-        int id = (empregadoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.id())) : null;
+        Integer id = (empregadoRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.id())) : null;
         String nome = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.nome());
         String cpf = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.cpf());
         String senha = descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.senha());
@@ -82,7 +82,7 @@ public class EmpregadoFactory {
         String telefone = (empregadoRecordOne.telefone() != null) ? descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.telefone()) : null;
         BigDecimal salario = new BigDecimal(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.salario()));
         TipoCargo cargo = (empregadoRecordOne.cargo() != null) ? TipoCargo.valueOf(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.cargo())) : null;
-        int filialId = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.filialId()));
+        Integer filialId = Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, empregadoRecordOne.filialId()));
 
         Date aniversario = null;
         if (empregadoRecordOne.aniversario() != null) {

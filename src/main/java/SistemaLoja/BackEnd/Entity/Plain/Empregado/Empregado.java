@@ -24,7 +24,7 @@ public class Empregado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Schema(description = "Número de identificação", example = "1")
-    private int id;
+    private Integer id;
     @NotBlank
     @Size(max = 255)
     @Schema(description = "Nome da pessoa", example = "Nome Completo", maxLength = 255)

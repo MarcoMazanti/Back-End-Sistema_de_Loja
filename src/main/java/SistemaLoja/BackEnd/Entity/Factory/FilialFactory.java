@@ -60,10 +60,10 @@ public class FilialFactory {
 
     // Encripted → Plain
     public Filial encriptedToPlainFilial(FilialRecordOne filialRecordOne) {
-        int id = (filialRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, filialRecordOne.id())) : null;
+        Integer id = (filialRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, filialRecordOne.id())) : null;
         String cnpj = descriptografar.descriptografar(chaveSimetrica, filialRecordOne.cnpj());
         String telefone = descriptografar.descriptografar(chaveSimetrica, filialRecordOne.telefone());
-        int quantEmpregados = (filialRecordOne.quantEmpregados() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, filialRecordOne.quantEmpregados())) : null;
+        Integer quantEmpregados = (filialRecordOne.quantEmpregados() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, filialRecordOne.quantEmpregados())) : null;
         String fullAdress = (filialRecordOne.fullAdress() != null) ? descriptografar.descriptografar(chaveSimetrica, filialRecordOne.fullAdress()) : null;
         String codCountry = descriptografar.descriptografar(chaveSimetrica, filialRecordOne.codCountry());
         String codEstado = descriptografar.descriptografar(chaveSimetrica, filialRecordOne.codEstado());

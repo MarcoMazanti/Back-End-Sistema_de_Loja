@@ -63,7 +63,7 @@ public class FornecedorFactory {
 
     // Encripted → Plain
     public Fornecedor encriptedToPlainFornecedor(FornecedorRecordOne fornecedorRecordOne) {
-        int id = (fornecedorRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.id())) : null;
+        Integer id = (fornecedorRecordOne.id() != null) ? Integer.parseInt(descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.id())) : null;
         String nome = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.nome());
         String cpfOrCnpj = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.cpfOrCnpj());
         String email = descriptografar.descriptografar(chaveSimetrica, fornecedorRecordOne.email());

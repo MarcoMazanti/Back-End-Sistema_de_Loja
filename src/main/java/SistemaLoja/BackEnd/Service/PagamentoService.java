@@ -4,6 +4,7 @@ import SistemaLoja.BackEnd.Entity.Plain.Estoque.Estoque;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.ItemPagamento;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.Pagamento;
 import SistemaLoja.BackEnd.Entity.Plain.Pagamento.PagamentoPayload;
+import SistemaLoja.BackEnd.Exception.AtualizacaoNaoPermitidaException;
 import SistemaLoja.BackEnd.Exception.CompraReprovadaException;
 import SistemaLoja.BackEnd.Exception.RegistroInexistenteException;
 import SistemaLoja.BackEnd.Exception.TabelaVaziaException;
@@ -102,6 +103,15 @@ public class PagamentoService {
 
         pagamentoPayload.setItemPagamentoList(salvarListaItem(pagamentoPayload.getItemPagamentoList()));
         return pagamentoPayload;
+    }
+
+    public Pagamento atualizarPagamento(Pagamento pagamento) {
+        if (pagamentoRepository.findById(pagamento.getId()).isEmpty()) throw new AtualizacaoNaoPermitidaException("ID não encontrado!");
+
+        if (pagamento.getPrecoTotal().compareTo(pagamento.getPrecoPago()) < 0) throw new AtualizacaoNaoPermitidaException("Pago quantia a mais!");
+
+        System.out.println("Atualizando Pagamento!");
+        return pagamentoRepository.save(pagamento);
     }
 
     private void alterarEstoque(List<ItemPagamento> itemPagamentoList) {

@@ -107,4 +107,14 @@ public class PagamentoController {
     public ResponseEntity<PagamentoPayload> efetuarVenda(@RequestBody PagamentoPayload pagamentoPayload) {
         return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.salvar(pagamentoPayload));
     }
+
+    // PUT
+    @Operation(summary = "Atualizar Pagamento", description = "Atualiza o pagamento que se encontrava pendente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "406", description = "Alteração de pagamento negada!")
+    })
+    @PutMapping
+    public ResponseEntity<Pagamento> putPagamento(@RequestBody Pagamento pagamento) {
+        return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.atualizarPagamento(pagamento));
+    }
 }
