@@ -24,10 +24,10 @@ public class Pagamento {
     private Integer id;
     @NotNull
     @Schema(description = "Campo relacional apontando para um registro de Cliente", example = "2")
-    private int idCliente;
+    private Integer idCliente;
     @NotNull
     @Schema(description = "Campo relacional apontando para um registro de Filial", example = "3")
-    private int idFilial;
+    private Integer idFilial;
     @NotNull
     @Digits(integer = 8, fraction = 2)
     @Schema(description = "Preço total da compra realizada pelo cliente")
@@ -52,7 +52,7 @@ public class Pagamento {
     }
 
     // Responsável pela volta do PagamentoRecordOne quando descriptografar
-    public Pagamento(int idCliente, BigDecimal precoTotal, BigDecimal precoPago, Date dataCompra, String codPagamento) {
+    public Pagamento(Integer idCliente, BigDecimal precoTotal, BigDecimal precoPago, Date dataCompra, String codPagamento) {
         String[] listaDados = codPagamento.split("-");
 
         this.id = Integer.parseInt(listaDados[3]);
@@ -65,26 +65,26 @@ public class Pagamento {
     }
 
     // Responsável apenas pelos campos NOT NULL no banco
-    public Pagamento(int idCliente, int idFilial, BigDecimal precoTotal) {
+    public Pagamento(Integer idCliente, Integer idFilial, BigDecimal precoTotal) {
         this.idCliente = idCliente;
         this.idFilial = idFilial;
         this.precoTotal = precoTotal;
     }
 
-    public Pagamento(int idCliente, int idFilial, BigDecimal precoTotal, BigDecimal precoPago) {
+    public Pagamento(Integer idCliente, Integer idFilial, BigDecimal precoTotal, BigDecimal precoPago) {
         this.idCliente = idCliente;
         this.idFilial = idFilial;
         this.precoTotal = precoTotal;
         this.precoPago = precoPago;
     }
 
-    public Pagamento(int idCliente, int idFilial) {
+    public Pagamento(Integer idCliente, Integer idFilial) {
         this.idCliente = idCliente;
         this.idFilial = idFilial;
     }
 
     // Responsável quando for envio de dados completos para cadastro
-    public Pagamento(int idCliente, int idFilial, BigDecimal precoTotal, BigDecimal precoPago, Date dataCompra, String codPagamento) {
+    public Pagamento(Integer idCliente, Integer idFilial, BigDecimal precoTotal, BigDecimal precoPago, Date dataCompra, String codPagamento) {
         this.idCliente = idCliente;
         this.idFilial = idFilial;
         this.precoTotal = precoTotal;

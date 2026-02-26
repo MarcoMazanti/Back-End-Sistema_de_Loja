@@ -24,25 +24,25 @@ public class ItemPagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Schema(description = "Número de identificação", example = "1")
-    private int id;
+    private Integer id;
     @Schema(description = "Campo relacional apontando para um registro de Pagamento", example = "1")
-    private int idPagamento;
+    private Integer idPagamento;
     @NotNull
     @Schema(description = "Campo relacional apontando para um registro de Estoque", example = "1")
-    private int idItem;
+    private Integer idItem;
     @NotBlank
     @Schema(description = "Nome do item", example = "Nome Completo do item", maxLength = 255)
     private String nome;
     @NotNull
     @Schema(description = "Quantidade deste item comprado")
-    private int quantidade;
+    private Integer quantidade;
     @NotNull
     @Digits(integer = 6, fraction = 2)
     @Schema(description = "Preço unitário do item comprado")
     private BigDecimal precoUnit;
 
     // Responsável quando for envio de dados completos para cadastro
-    public ItemPagamento(int idPagamento, int idItem, String nome, int quantidade, BigDecimal precoUnit) {
+    public ItemPagamento(Integer idPagamento, Integer idItem, String nome, Integer quantidade, BigDecimal precoUnit) {
         this.idPagamento = idPagamento;
         this.idItem = idItem;
         this.nome = nome;
@@ -50,7 +50,7 @@ public class ItemPagamento {
         this.precoUnit = precoUnit;
     }
 
-    public ItemPagamento(int idItem, String nome, int quantidade, BigDecimal precoUnit) {
+    public ItemPagamento(Integer idItem, String nome, Integer quantidade, BigDecimal precoUnit) {
         this.idItem = idItem;
         this.nome = nome;
         this.quantidade = quantidade;

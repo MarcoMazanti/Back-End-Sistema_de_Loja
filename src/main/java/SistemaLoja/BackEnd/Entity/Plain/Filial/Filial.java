@@ -21,7 +21,7 @@ public class Filial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Schema(description = "Número de identificação", example = "1")
-    private int id;
+    private Integer id;
     @NotBlank
     @Size(min = 14, max = 14)
     @Setter(AccessLevel.NONE)
@@ -32,7 +32,7 @@ public class Filial {
     @Schema(example = "55018990123456", minLength = 9, maxLength = 15)
     private String telefone;
     @Schema(defaultValue = "0", example = "0")
-    private int quantEmpregados;
+    private Integer quantEmpregados;
     @Column(name = "full_adress", columnDefinition = "TEXT", nullable = false)
     @Schema(description = "Endereço completo", example = "País, Estado, Cidade, Rua, Complemento, Número")
     private String fullAdress;
@@ -53,7 +53,7 @@ public class Filial {
     private String codFilial;
 
     // Responsável pela volta da FilialRecordTwo quando descriptografar
-    public Filial(String codFilial, String cnpj, String telefone, int quantEmpregados, String fullAdress) {
+    public Filial(String codFilial, String cnpj, String telefone, Integer quantEmpregados, String fullAdress) {
         String[] listaDados = codFilial.split("-");
 
         this.id = Integer.parseInt(listaDados[4]);
@@ -78,7 +78,7 @@ public class Filial {
     }
 
     // Responsável quando for envio de dados completos para cadastro
-    public Filial(String cnpj, String telefone, int quantEmpregados, String fullAdress, String codCountry, String codEstado, String codCidade, String codFilial) {
+    public Filial(String cnpj, String telefone, Integer quantEmpregados, String fullAdress, String codCountry, String codEstado, String codCidade, String codFilial) {
         this.setCnpj(cnpj);
         this.setTelefone(telefone);
         this.quantEmpregados = quantEmpregados;

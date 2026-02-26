@@ -22,22 +22,22 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Schema(description = "Número de identificação", example = "1")
-    private int id;
+    private Integer id;
     @NotBlank
     @Size(max = 255)
     @Schema(description = "Nome do item", example = "Nome Completo do item", maxLength = 255)
     private String nome;
     @NotNull
     @Schema(description = "Campo relacional apontando para um registro de Filial", example = "2")
-    private int idFilial;
+    private Integer idFilial;
     @NotNull
     @Schema(description = "Campo relacional apontando para um registro de Fornecedor", example = "3")
-    private int idFornecedor;
+    private Integer idFornecedor;
     @NotNull
     @Schema(description = "Preço unitário do item")
     private BigDecimal preco;
     @Schema(description = "Quantidade deste item disponível")
-    private int quantidade;
+    private Integer quantidade;
     @Schema(description = "Descrição do item em estoque")
     private String descricao;
     @Column(name = "cod_item", length = 23, insertable = false, updatable = false)
@@ -45,7 +45,7 @@ public class Estoque {
     private String codItem;
 
     // Responsável pela volta do EstoqueRecordTwo quando descriptografar
-    public Estoque(String nome, int idFornecedor, BigDecimal preco, int quantidade, String descricao, String codItem) {
+    public Estoque(String nome, Integer idFornecedor, BigDecimal preco, Integer quantidade, String descricao, String codItem) {
         String[] listaDados = codItem.split("-");
 
         this.id = Integer.parseInt(listaDados[3]);
@@ -59,7 +59,7 @@ public class Estoque {
     }
 
     // Responsável apenas pelos campos NOT NULL no banco
-    public Estoque(String nome, int idFilial, int idFornecedor, BigDecimal preco) {
+    public Estoque(String nome, Integer idFilial, Integer idFornecedor, BigDecimal preco) {
         this.nome = nome;
         this.idFilial = idFilial;
         this.idFornecedor = idFornecedor;
@@ -67,7 +67,7 @@ public class Estoque {
     }
 
     // Responsável quando for envio de dados completos para cadastro
-    public Estoque(String nome, int idFilial, int idFornecedor, BigDecimal preco, int quantidade, String descricao, String codItem) {
+    public Estoque(String nome, Integer idFilial, Integer idFornecedor, BigDecimal preco, Integer quantidade, String descricao, String codItem) {
         this.nome = nome;
         this.idFilial = idFilial;
         this.idFornecedor = idFornecedor;

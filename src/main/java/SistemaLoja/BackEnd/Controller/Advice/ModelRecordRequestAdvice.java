@@ -13,6 +13,7 @@ import SistemaLoja.BackEnd.Entity.Plain.Empregado.Login;
 import SistemaLoja.BackEnd.Entity.Plain.Empregado.TrocarSenha;
 import SistemaLoja.BackEnd.Security.GerarSecretKey;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +82,10 @@ public class ModelRecordRequestAdvice extends RequestBodyAdviceAdapter {
                         String jsonFinal = mapper.writeValueAsString(objDescript);
                         return new ByteArrayInputStream(jsonFinal.getBytes(StandardCharsets.UTF_8));
                     }
-
-                    return new ByteArrayInputStream("".getBytes());
+                    return new ByteArrayInputStream(bodyOriginal.getBytes(StandardCharsets.UTF_8));
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    return new ByteArrayInputStream("".getBytes());
+                    e.printStackTrace();
+                    return new ByteArrayInputStream(bodyOriginal.getBytes(StandardCharsets.UTF_8));
                 }
             }
         };
@@ -131,7 +131,7 @@ public class ModelRecordRequestAdvice extends RequestBodyAdviceAdapter {
                 return null;
             }
         } catch (Exception e) {
-            System.out.println("Erro ao descriptografar body do Request!");
+            System.out.println("Erro ao descriptografar body do Request!\n" + e.getMessage());
             return null;
         }
     }
