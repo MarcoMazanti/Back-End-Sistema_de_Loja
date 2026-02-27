@@ -55,5 +55,5 @@ Será desenvolvido em Ordem de Desenvolvimento e cada ítem sendo feito em Ordem
 ## Data de Início
 #### 2026-01-05
 
-## Data de Término Geral
-#### 2026-02-26
+## Data de Término
+#### 2026-02-27
