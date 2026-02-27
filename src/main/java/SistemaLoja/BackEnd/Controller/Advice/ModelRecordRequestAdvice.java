@@ -117,10 +117,10 @@ public class ModelRecordRequestAdvice extends RequestBodyAdviceAdapter {
             } else if (jsonNode.has("codForncedor")) {
                 fornecedorFactory.setChaveSimetrica(chaveSimetrica);
                 return fornecedorFactory.encriptedToPlainFornecedor(mapper.treeToValue(jsonNode, FornecedorRecordOne.class));
-            } else if (jsonNode.has("pagamento") && !jsonNode.has("precoUnit")) {
+            } else if (jsonNode.has("codPagamento") && !jsonNode.has("precoPago")) {
                 pagamentoGeralFactory.setChaveSimetrica(chaveSimetrica);
                 return pagamentoGeralFactory.encriptedToPlainPagamento(mapper.treeToValue(jsonNode, PagamentoRecordOne.class));
-            } else if (!jsonNode.has("pagamento") && jsonNode.has("precoUnit")) {
+            } else if (!jsonNode.has("idPagamento") && jsonNode.has("precoUnit")) {
                 pagamentoGeralFactory.setChaveSimetrica(chaveSimetrica);
                 return pagamentoGeralFactory.encriptedToPlainItemPagamento(mapper.treeToValue(jsonNode, ItemPagamentoRecordOne.class));
             } else if (jsonNode.has("pagamento") && jsonNode.has("itemPagamentoList")) {
